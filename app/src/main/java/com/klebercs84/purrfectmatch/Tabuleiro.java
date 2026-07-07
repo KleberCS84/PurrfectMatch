@@ -29,4 +29,18 @@ public class Tabuleiro {
     public Gato getGato(int linha, int coluna){
         return grade[linha][coluna];
     }
+
+    public void trocar(int linha1, int coluna1, int linha2, int coluna2){
+        // Só permite troca de gatos adjacentes
+        boolean mesmaLinha = (linha1 == linha2) && (Math.abs(coluna1 - coluna2) == 1);
+        boolean mesmaColuna = (coluna1 == coluna2) && (Math.abs(linha1-linha2) == 1);
+        if (!mesmaLinha && !mesmaColuna){
+            return; // ignora troca inválida
+        }
+
+        // Troca os dois gatos de posição
+        Gato temp = grade[linha1][coluna1];
+        grade [linha1][coluna1] = grade[linha2][coluna2];
+        grade [linha2][coluna2] = temp;
+    }
 }

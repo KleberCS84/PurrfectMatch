@@ -6,13 +6,20 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.MotionEvent;
 
 public class GameView extends View{
     private Tabuleiro tabuleiro;
     private Paint paint;
     private int tamanhoCell;
     private Bitmap[] sprites;
+    private int linhaSelecionada = -1;
+    private int colunaSelecionada = -1;
+    private int alturaView;
+    private int offsetY;
+
 
     public GameView(Context context){
         super(context);
@@ -34,6 +41,9 @@ public class GameView extends View{
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh){
         tamanhoCell = w / Tabuleiro.TAMANHO;
+        alturaView = h;
+        int alturaTotal = tamanhoCell * Tabuleiro.TAMANHO;
+        offsetY = (alturaView - alturaTotal) / 2; // centraliza verticalmente
     }
 
     @Override
@@ -50,7 +60,7 @@ public class GameView extends View{
 
                 // Posição da imagem na tela
                 float x = coluna * tamanhoCell;
-                float y = linha * tamanhoCell;
+                float y = linha * tamanhoCell + offsetY;
 
                 // Redimesiona o sprite para caber na célula
                 Bitmap redimendionado = Bitmap.createScaledBitmap(sprite, tamanhoCell, tamanhoCell, true);
@@ -58,5 +68,37 @@ public class GameView extends View{
                 canvas.drawBitmap(redimendionado, x, y, paint);
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        if (event.getAction()!= MotionEvent.ACTION_DOWN){
+            return true;
+        }
+
+        // Calcula qual céllula foi tocada
+        int coluna = (int) (event.getX() / tamanhoCell);
+        int linha = (int) ((event.getY() - offsetY) / tamanhoCell);
+
+        // Ignora toque fora do tabuleiro
+        if (linha < 0 || linha >= Tabuleiro.TAMANHO || coluna < 0 || coluna >= Tabuleiro.TAMANHO){
+            return true;
+        }
+
+        if (linhaSelecionada == -1){
+            // Primeiro toque -- seleciona o gato
+            linhaSelecionada = linha;
+            colunaSelecionada = coluna;
+            tabuleiro.getGato(linha, coluna).setSelecionado(true);
+        } else {
+            // segundo toque -- tenta trocar
+            tabuleiro.getGato(linhaSelecionada, colunaSelecionada).setSelecionado(false);
+            tabuleiro.trocar(linhaSelecionada, colunaSelecionada, linha, coluna);
+            linhaSelecionada = -1;
+            colunaSelecionada = -1;
+        }
+
+        invalidate(); // redesenha a tela
+        return true;
     }
 }
