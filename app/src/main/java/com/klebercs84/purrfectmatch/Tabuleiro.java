@@ -43,4 +43,53 @@ public class Tabuleiro {
         grade [linha1][coluna1] = grade[linha2][coluna2];
         grade [linha2][coluna2] = temp;
     }
+
+    public boolean verificarMatches(){
+        boolean encontrou = false;
+        boolean[][] paraRemover = new boolean[TAMANHO][TAMANHO];
+
+        // Verifica matches horizontais
+        for (int linha = 0; linha < TAMANHO; linha++){
+            for (int coluna = 0; coluna < TAMANHO -2; coluna++){
+                int tipo = grade[linha][coluna].getTipo();
+                if (tipo == grade[linha][coluna + 1].getTipo() && tipo == grade[linha][coluna + 2].getTipo()){
+                    paraRemover[linha][coluna] = true;
+                    paraRemover[linha][coluna + 1] = true;
+                    paraRemover[linha][coluna + 2] = true;
+                    encontrou = true;
+                }
+            }
+        }
+
+        // Verifica matches verticais
+        for (int linha = 0; linha < TAMANHO - 2; linha++){
+            for (int coluna = 0; coluna < TAMANHO; coluna++){
+                int tipo = grade[linha][coluna].getTipo();
+                if (tipo == grade[linha + 1][coluna].getTipo() && tipo == grade[linha + 2][coluna].getTipo()){
+                    paraRemover[linha][coluna] = true;
+                    paraRemover[linha + 1][coluna] = true;
+                    paraRemover[linha + 2][coluna] = true;
+                    encontrou = true;
+                }
+            }
+        }
+
+        // Remove os gatos que fazem match
+        if (encontrou){
+            removerMatches(paraRemover);
+        }
+        return encontrou;
+    }
+
+    private void removerMatches(boolean[][] paraRemover){
+        Random random = new Random();
+        for (int linha = 0; linha<TAMANHO;linha++){
+            for (int coluna = 0; coluna<TAMANHO; coluna++){
+                if (paraRemover[linha][coluna]){
+                    // Substitui por um gato novo aleatório
+                    grade[linha][coluna] = new Gato(random.nextInt(Gato.TOTAL_TIPOS));
+                }
+            }
+        }
+    }
 }

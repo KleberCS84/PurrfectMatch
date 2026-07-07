@@ -94,6 +94,7 @@ public class GameView extends View{
             // segundo toque -- tenta trocar
             tabuleiro.getGato(linhaSelecionada, colunaSelecionada).setSelecionado(false);
             tabuleiro.trocar(linhaSelecionada, colunaSelecionada, linha, coluna);
+            tabuleiro.verificarMatches();
             linhaSelecionada = -1;
             colunaSelecionada = -1;
         }
