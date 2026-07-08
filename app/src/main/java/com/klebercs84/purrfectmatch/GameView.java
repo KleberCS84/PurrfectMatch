@@ -56,6 +56,7 @@ public class GameView extends View{
         for (int linha = 0; linha < Tabuleiro.TAMANHO; linha++){
             for (int coluna = 0; coluna < Tabuleiro.TAMANHO; coluna ++){
                 Gato gato = tabuleiro.getGato(linha,coluna);
+                if (gato == null) continue; // pula células vazias
                 Bitmap sprite = sprites[gato.getTipo()];
 
                 // Posição da imagem na tela
@@ -66,6 +67,14 @@ public class GameView extends View{
                 Bitmap redimendionado = Bitmap.createScaledBitmap(sprite, tamanhoCell, tamanhoCell, true);
 
                 canvas.drawBitmap(redimendionado, x, y, paint);
+
+                // Borda de destaque no gato selecionado
+                if (gato.isSelecionado()){
+                    paint.setStyle(Paint.Style.STROKE);
+                    paint.setColor(Color.rgb(255, 255, 0)); // amarelo
+                    paint.setStrokeWidth(6);
+                    canvas.drawRect(x, y, x + tamanhoCell, y + tamanhoCell, paint);
+                }
             }
         }
     }
@@ -95,6 +104,7 @@ public class GameView extends View{
             tabuleiro.getGato(linhaSelecionada, colunaSelecionada).setSelecionado(false);
             tabuleiro.trocar(linhaSelecionada, colunaSelecionada, linha, coluna);
             tabuleiro.verificarMatches();
+            tabuleiro.aplicarGravidade();
             linhaSelecionada = -1;
             colunaSelecionada = -1;
         }

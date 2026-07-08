@@ -87,9 +87,41 @@ public class Tabuleiro {
             for (int coluna = 0; coluna<TAMANHO; coluna++){
                 if (paraRemover[linha][coluna]){
                     // Substitui por um gato novo aleatório
+                    //grade[linha][coluna] = new Gato(random.nextInt(Gato.TOTAL_TIPOS)); linha substituida pela linha abaixo para queda dos gatos
+                    grade[linha][coluna] = null; // marca como vazio
+                }
+            }
+        }
+    }
+
+    public void aplicarGravidade(){
+        // Para cada coluna, empurra os gatos para baixo
+        for (int coluna=0; coluna<TAMANHO; coluna++){
+            // Começa de baixo para cima
+            for (int linha = TAMANHO -1; linha >= 0; linha--){
+                if (grade[linha][coluna] == null){
+                    // Procura o próximo gato acima para cair
+                    for (int acima = linha -1; acima >= 0; acima--){
+                        if (grade[acima][coluna] != null){
+                            grade[linha][coluna] = grade[acima][coluna];
+                            grade[acima][coluna] = null;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Preenche os espaços vazios no topo com novos gatos
+        Random random = new Random();
+        for (int linha = 0; linha < TAMANHO; linha++){
+            for (int coluna = 0; coluna < TAMANHO; coluna++){
+                if (grade[linha][coluna] == null){
                     grade[linha][coluna] = new Gato(random.nextInt(Gato.TOTAL_TIPOS));
                 }
             }
         }
     }
+
+
 }
