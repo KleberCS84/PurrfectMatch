@@ -77,6 +77,13 @@ public class GameView extends View{
                 }
             }
         }
+
+        // Exibe a pontuação acima do tabuleiro
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(60);
+        paint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText("Pontos: " + tabuleiro.getPontuacao(), getWidth() / 2f, offsetY / 2f, paint);
     }
 
     @Override

@@ -7,6 +7,8 @@ public class Tabuleiro {
 
     private Gato[][] grade; // matriz de objetos Gato
     private Random random;
+    private int pontuacao;
+
 
     // Construtor - cria o tabuleiro com gatos aleatórios
     public Tabuleiro(){
@@ -28,6 +30,10 @@ public class Tabuleiro {
     // Retorna o gato numa posição específica
     public Gato getGato(int linha, int coluna){
         return grade[linha][coluna];
+    }
+
+    public int getPontuacao(){
+        return pontuacao;
     }
 
     public void trocar(int linha1, int coluna1, int linha2, int coluna2){
@@ -89,6 +95,7 @@ public class Tabuleiro {
                     // Substitui por um gato novo aleatório
                     //grade[linha][coluna] = new Gato(random.nextInt(Gato.TOTAL_TIPOS)); linha substituida pela linha abaixo para queda dos gatos
                     grade[linha][coluna] = null; // marca como vazio
+                    pontuacao += 10;
                 }
             }
         }
