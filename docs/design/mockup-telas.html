@@ -8,7 +8,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #0D0C1E;
+      background: #0A0918;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #F0EEFF;
       min-height: 100vh;
@@ -17,12 +17,12 @@
 
     h1 {
       text-align: center;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       color: #9F8FFF;
       letter-spacing: 3px;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .project-name {
@@ -37,19 +37,34 @@
       text-align: center;
       font-size: 11px;
       color: #6B5FA8;
-      margin-bottom: 48px;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .chosen-badge {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .chosen-badge span {
+      background: #2A1F5A;
+      border: 1px solid #7B5FFF;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      color: #9F8FFF;
       letter-spacing: 1px;
     }
 
     .screens {
       display: flex;
-      gap: 32px;
+      gap: 28px;
       justify-content: center;
       flex-wrap: wrap;
       align-items: flex-start;
     }
 
-    .screen-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .screen-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
     .screen-label {
       font-size: 11px;
@@ -59,155 +74,309 @@
     }
 
     .phone {
-      width: 200px;
+      width: 210px;
       background: #12112A;
-      border-radius: 28px;
+      border-radius: 30px;
       border: 1.5px solid #2A2550;
       overflow: hidden;
+      position: relative;
     }
 
     .status-bar {
-      background: #0D0C1E;
-      height: 24px;
+      background: #0A0918;
+      height: 22px;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      padding: 0 12px;
-      gap: 5px;
+      justify-content: space-between;
+      padding: 0 14px;
+      font-size: 10px;
+      color: #9F8FFF;
     }
 
-    .dot { width: 5px; height: 5px; border-radius: 50%; background: #4A3D8F; }
-    .dot.on { background: #9F8FFF; }
+    .status-icons { display: flex; gap: 4px; align-items: center; }
+    .status-dot { width: 4px; height: 4px; border-radius: 50%; background: #7B5FFF; }
 
-    .screen-body { padding: 16px 14px 20px; }
+    /* === CENÁRIO NOTURNO === */
+    .night-scene {
+      width: 100%;
+      height: 90px;
+      background: linear-gradient(180deg, #0D0B2A 0%, #1A1245 50%, #251850 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stars {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #F0EEFF;
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+
+    .building {
+      position: absolute;
+      bottom: 0;
+      background: #0D0B2A;
+      border-radius: 2px 2px 0 0;
+    }
+
+    .building-window {
+      position: absolute;
+      background: #FFD700;
+      opacity: 0.6;
+      border-radius: 1px;
+    }
+
+    .rooftop {
+      position: absolute;
+      bottom: 28px;
+      left: 0; right: 0;
+      height: 28px;
+      background: #1A1245;
+    }
+
+    .chimney {
+      position: absolute;
+      bottom: 28px;
+      width: 8px;
+      border-radius: 1px 1px 0 0;
+    }
+
+    .cat-silhouette {
+      position: absolute;
+      font-size: 14px;
+      bottom: 28px;
+      filter: brightness(0) invert(0.15);
+    }
 
     /* === TELA INICIAL === */
-    .home-icon { text-align: center; font-size: 44px; margin: 8px 0 6px; }
-    .home-title { text-align: center; font-size: 22px; font-weight: 500; color: #F0EEFF; letter-spacing: -0.5px; }
-    .home-sub { text-align: center; font-size: 9px; color: #9F8FFF; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 18px; }
+    .home-body { padding: 12px 14px 18px; }
+    .home-title { text-align: center; font-size: 22px; font-weight: 500; color: #F0EEFF; letter-spacing: -0.5px; margin-bottom: 2px; }
+    .home-sub { text-align: center; font-size: 9px; color: #9F8FFF; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
 
     .mini-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 4px;
-      margin-bottom: 20px;
+      gap: 3px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2A2550;
     }
 
     .mini-cell {
       aspect-ratio: 1;
-      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 17px;
+      background: #1A1840;
     }
 
     .btn {
       width: 100%;
-      padding: 10px;
+      padding: 9px;
       border-radius: 10px;
       text-align: center;
       font-size: 12px;
       font-weight: 500;
-      cursor: pointer;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
 
     .btn-primary { background: #7B5FFF; color: #F0EEFF; }
     .btn-secondary { background: transparent; border: 1px solid #4A3D8F; color: #9F8FFF; }
 
     /* === TELA DE JOGO === */
+    .game-body { padding: 10px 10px 14px; }
+
     .hud {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      gap: 6px;
     }
 
     .hud-card {
       background: #1E1C3A;
+      border: 1px solid #3A3060;
       border-radius: 8px;
-      padding: 5px 10px;
+      padding: 4px 8px;
       text-align: center;
-      min-width: 58px;
+      flex: 1;
     }
 
-    .hud-label { font-size: 8px; color: #6B5FA8; text-transform: uppercase; letter-spacing: 1px; }
-    .hud-value { font-size: 15px; font-weight: 500; color: #F0EEFF; }
+    .hud-icon { font-size: 12px; margin-bottom: 1px; }
+    .hud-label { font-size: 7px; color: #6B5FA8; text-transform: uppercase; letter-spacing: 1px; }
+    .hud-value { font-size: 13px; font-weight: 500; color: #F0EEFF; }
 
     .phase-badge {
       text-align: center;
+      padding: 0 4px;
     }
 
-    .phase-num { font-size: 18px; font-weight: 500; color: #F0EEFF; }
-    .phase-lbl { font-size: 8px; color: #6B5FA8; text-transform: uppercase; letter-spacing: 1px; }
+    .phase-num { font-size: 16px; font-weight: 500; color: #F0EEFF; }
+    .phase-lbl { font-size: 7px; color: #6B5FA8; text-transform: uppercase; letter-spacing: 1px; }
 
     .board {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 3px;
-      margin-bottom: 12px;
+      gap: 2px;
+      margin-bottom: 10px;
+      background: #1A1840;
+      border-radius: 8px;
+      padding: 4px;
+      border: 1px solid #2A2550;
     }
 
     .cell {
       aspect-ratio: 1;
-      border-radius: 6px;
+      border-radius: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      font-size: 12px;
+      background: #12112A;
     }
 
-    .cell.selected { outline: 2px solid #FFD700; outline-offset: -1px; }
+    .cell.selected {
+      outline: 2px solid #FFD700;
+      outline-offset: -1px;
+    }
 
-    .progress-wrap { margin-bottom: 4px; }
-    .progress-bar { background: #1E1C3A; border-radius: 4px; height: 6px; }
-    .progress-fill { background: #7B5FFF; height: 100%; border-radius: 4px; width: 60%; }
-    .progress-labels {
+    .progress-section { margin-bottom: 8px; }
+
+    .progress-bar-wrap {
+      background: #1E1C3A;
+      border: 1px solid #3A3060;
+      border-radius: 10px;
+      height: 8px;
+      margin-bottom: 3px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      background: #7B5FFF;
+      height: 100%;
+      border-radius: 10px;
+      width: 55%;
+    }
+
+    .progress-cat {
+      position: absolute;
+      top: -4px;
+      left: 53%;
+      font-size: 14px;
+    }
+
+    .progress-paws {
       display: flex;
       justify-content: space-between;
       font-size: 8px;
       color: #6B5FA8;
-      margin-bottom: 8px;
-      margin-top: 3px;
+      padding: 0 2px;
+      margin-bottom: 6px;
     }
+
+    .objectives { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
 
     .objective {
       background: #1E1C3A;
-      border-radius: 7px;
-      padding: 6px 8px;
+      border: 1px solid #3A3060;
+      border-radius: 6px;
+      padding: 4px 8px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 5px;
+      gap: 5px;
     }
 
-    .obj-icon { font-size: 16px; }
-    .obj-text { font-size: 9px; color: #9F8FFF; flex: 1; }
-    .obj-count { font-size: 10px; color: #F0EEFF; font-weight: 500; }
-    .obj-check { font-size: 11px; color: #4CAF50; }
+    .obj-icon { font-size: 13px; }
+    .obj-text { font-size: 8px; color: #9F8FFF; flex: 1; }
+    .obj-count { font-size: 9px; color: #F0EEFF; font-weight: 500; }
+    .obj-check { font-size: 10px; color: #4CAF50; }
 
-    /* === TELA DE VITÓRIA === */
-    .win-tag {
+    .boosters {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .booster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .booster-icon {
+      width: 28px;
+      height: 28px;
+      background: #2A1F5A;
+      border: 1px solid #7B5FFF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      position: relative;
+    }
+
+    .booster-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 10px;
+      height: 10px;
+      background: #FF4444;
+      border-radius: 50%;
+      font-size: 7px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .booster-label { font-size: 7px; color: #6B5FA8; }
+
+    .bottom-btns {
+      display: flex;
+      gap: 4px;
+    }
+
+    .bottom-btn {
+      flex: 1;
+      background: #7B5FFF;
+      border-radius: 7px;
+      padding: 6px 4px;
       text-align: center;
       font-size: 9px;
-      color: #6B5FA8;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-      margin-top: 6px;
+      font-weight: 500;
+      color: #F0EEFF;
     }
 
-    .win-stars { text-align: center; font-size: 26px; letter-spacing: 4px; margin: 4px 0; }
-    .win-cats { text-align: center; font-size: 28px; margin: 6px 0; }
-    .win-title { text-align: center; font-size: 15px; font-weight: 500; color: #F0EEFF; margin-bottom: 2px; }
-    .win-score { text-align: center; font-size: 11px; color: #9F8FFF; margin-bottom: 12px; }
+    /* === TELA DE VITÓRIA === */
+    .win-body { padding: 12px 14px 18px; text-align: center; }
+    .win-scene { font-size: 9px; color: #6B5FA8; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; margin-top: 4px; }
+    .win-stars { font-size: 24px; letter-spacing: 3px; margin: 4px 0; }
+    .win-cats { font-size: 26px; margin: 6px 0; }
+    .win-title { font-size: 14px; font-weight: 500; color: #F0EEFF; margin-bottom: 2px; }
+    .win-score { font-size: 11px; color: #9F8FFF; margin-bottom: 10px; }
 
     .win-card {
       background: #1E1C3A;
+      border: 1px solid #3A3060;
       border-radius: 8px;
-      padding: 10px 12px;
-      margin-bottom: 14px;
+      padding: 8px 10px;
+      margin-bottom: 12px;
+      text-align: left;
     }
 
     .win-row {
@@ -215,19 +384,21 @@
       justify-content: space-between;
       font-size: 9px;
       padding: 3px 0;
+      border-bottom: 1px solid #2A2550;
     }
 
+    .win-row:last-child { border-bottom: none; }
     .win-row-label { color: #6B5FA8; }
     .win-row-value { color: #F0EEFF; }
     .win-row-bonus { color: #9F8FFF; }
 
     /* === PALETA === */
     .palette-section {
-      max-width: 700px;
-      margin: 60px auto 0;
+      max-width: 720px;
+      margin: 56px auto 0;
     }
 
-    .palette-title {
+    .section-title {
       font-size: 11px;
       color: #6B5FA8;
       letter-spacing: 2px;
@@ -238,33 +409,53 @@
 
     .palette-grid {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
       flex-wrap: wrap;
     }
 
-    .swatch {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
+    .swatch { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 
     .swatch-color {
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
       border-radius: 10px;
       border: 1px solid rgba(255,255,255,0.08);
     }
 
     .swatch-hex { font-size: 9px; color: #6B5FA8; font-family: monospace; }
-    .swatch-name { font-size: 9px; color: #9F8FFF; text-align: center; max-width: 60px; }
+    .swatch-name { font-size: 9px; color: #9F8FFF; text-align: center; max-width: 64px; }
+
+    /* === ROADMAP === */
+    .roadmap-section {
+      max-width: 520px;
+      margin: 48px auto 0;
+    }
+
+    .roadmap-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+    .roadmap-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      padding: 8px 12px;
+      background: #1A1840;
+      border-radius: 8px;
+      border: 1px solid #2A2550;
+    }
+
+    .roadmap-item.done { opacity: 0.5; }
+    .roadmap-item.done .check { color: #4CAF50; }
+    .roadmap-item .check { font-size: 14px; color: #4A3D8F; }
+    .roadmap-item .label { color: #9F8FFF; }
+    .roadmap-item.done .label { color: #6B5FA8; text-decoration: line-through; }
 
     .footer {
       text-align: center;
       margin-top: 48px;
       font-size: 10px;
-      color: #4A3D8F;
+      color: #2A2550;
     }
   </style>
 </head>
@@ -273,6 +464,7 @@
   <h1>Mockup de telas</h1>
   <div class="project-name">Purrfect Match</div>
   <div class="project-sub">Jogo match-3 · Java · Android</div>
+  <div class="chosen-badge"><span>✦ Visual escolhido: Noturno Roxo</span></div>
 
   <div class="screens">
 
@@ -280,23 +472,49 @@
     <div class="screen-wrapper">
       <div class="phone">
         <div class="status-bar">
-          <div class="dot"></div>
-          <div class="dot on"></div>
-          <div class="dot on"></div>
+          <span>12:00</span>
+          <div class="status-icons">
+            <div class="status-dot"></div>
+            <div class="status-dot"></div>
+            <div class="status-dot"></div>
+          </div>
         </div>
-        <div class="screen-body">
-          <div class="home-icon">🐱</div>
+        <div class="night-scene">
+          <div class="stars">
+            <div class="star" style="top:10%;left:15%;"></div>
+            <div class="star" style="top:20%;left:40%;"></div>
+            <div class="star" style="top:8%;left:70%;"></div>
+            <div class="star" style="top:30%;left:85%;"></div>
+            <div class="star" style="top:15%;left:55%;"></div>
+            <div class="star" style="top:25%;left:25%;"></div>
+          </div>
+          <div class="building" style="left:10px;width:28px;height:52px;">
+            <div class="building-window" style="top:8px;left:4px;width:6px;height:6px;"></div>
+            <div class="building-window" style="top:8px;left:14px;width:6px;height:6px;"></div>
+          </div>
+          <div class="building" style="left:50px;width:20px;height:38px;"></div>
+          <div class="building" style="right:10px;width:32px;height:60px;">
+            <div class="building-window" style="top:10px;left:5px;width:8px;height:8px;"></div>
+          </div>
+          <div class="building" style="right:48px;width:22px;height:44px;"></div>
+          <div class="rooftop"></div>
+          <div class="chimney" style="left:60px;height:14px;background:#0D0B2A;"></div>
+          <div class="chimney" style="right:80px;height:10px;background:#0D0B2A;"></div>
+          <div class="cat-silhouette" style="left:20px;">🐱</div>
+          <div class="cat-silhouette" style="right:30px;">🐈</div>
+        </div>
+        <div class="home-body">
           <div class="home-title">Purrfect Match</div>
           <div class="home-sub">cat rescue</div>
           <div class="mini-grid">
-            <div class="mini-cell" style="background:#2A1F4A;">🐱</div>
-            <div class="mini-cell" style="background:#1A2A1A;">🐈</div>
-            <div class="mini-cell" style="background:#2A2A1A;">😺</div>
-            <div class="mini-cell" style="background:#2A1A1A;">🐾</div>
-            <div class="mini-cell" style="background:#1A2A2A;">😸</div>
-            <div class="mini-cell" style="background:#2A1F4A;">🐱</div>
-            <div class="mini-cell" style="background:#2A2A1A;">😺</div>
-            <div class="mini-cell" style="background:#1A2A1A;">🐈</div>
+            <div class="mini-cell">🐱</div>
+            <div class="mini-cell">🐈</div>
+            <div class="mini-cell">😺</div>
+            <div class="mini-cell">🐾</div>
+            <div class="mini-cell">😸</div>
+            <div class="mini-cell">🐱</div>
+            <div class="mini-cell">😺</div>
+            <div class="mini-cell">🐈</div>
           </div>
           <div class="btn btn-primary">Jogar</div>
           <div class="btn btn-secondary">Fases</div>
@@ -309,59 +527,86 @@
     <div class="screen-wrapper">
       <div class="phone">
         <div class="status-bar">
-          <div class="dot on"></div>
-          <div class="dot on"></div>
-          <div class="dot on"></div>
+          <span>12:00</span>
+          <div class="status-icons">
+            <div class="status-dot"></div>
+            <div class="status-dot"></div>
+            <div class="status-dot"></div>
+          </div>
         </div>
-        <div class="screen-body">
+        <div class="game-body">
           <div class="hud">
             <div class="hud-card">
-              <div class="hud-label">pontos</div>
-              <div class="hud-value">1.240</div>
+              <div class="hud-icon">🐾</div>
+              <div class="hud-label">score</div>
+              <div class="hud-value">12,450</div>
             </div>
             <div class="phase-badge">
               <div class="phase-lbl">fase</div>
-              <div class="phase-num">3</div>
+              <div class="phase-num">1</div>
             </div>
             <div class="hud-card">
-              <div class="hud-label">jogadas</div>
-              <div class="hud-value">12</div>
+              <div class="hud-icon">⭐</div>
+              <div class="hud-label">moves left</div>
+              <div class="hud-value">21</div>
             </div>
           </div>
 
           <div class="board">
-            <div class="cell" style="background:#2A1F4A;">🐱</div>
-            <div class="cell selected" style="background:#1A2A1A;">🐈</div>
-            <div class="cell" style="background:#2A2A1A;">😺</div>
-            <div class="cell" style="background:#2A1F4A;">🐱</div>
-            <div class="cell" style="background:#1A2A2A;">😸</div>
-            <div class="cell" style="background:#1A2A1A;">🐈</div>
-            <div class="cell" style="background:#1A2A1A;">🐈</div>
-            <div class="cell" style="background:#2A1A1A;">🐾</div>
-            <div class="cell" style="background:#2A2A1A;">😺</div>
-            <div class="cell" style="background:#2A1F4A;">🐱</div>
-            <div class="cell" style="background:#2A1A1A;">🐾</div>
-            <div class="cell" style="background:#2A1F4A;">🐱</div>
-            <div class="cell" style="background:#1A2A2A;">😸</div>
-            <div class="cell" style="background:#1A2A1A;">🐈</div>
-            <div class="cell" style="background:#2A2A1A;">😺</div>
+            <div class="cell">🐱</div>
+            <div class="cell selected">🐈</div>
+            <div class="cell">😺</div>
+            <div class="cell">🐱</div>
+            <div class="cell">😸</div>
+            <div class="cell">🐈</div>
+            <div class="cell">🐈</div>
+            <div class="cell">🐾</div>
+            <div class="cell">😺</div>
+            <div class="cell">🐱</div>
+            <div class="cell">🐾</div>
+            <div class="cell">🐱</div>
+            <div class="cell">😸</div>
+            <div class="cell">🐈</div>
+            <div class="cell">😺</div>
           </div>
 
-          <div class="progress-wrap">
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-            <div class="progress-labels"><span>objetivo da fase</span><span>60%</span></div>
+          <div class="progress-section">
+            <div class="progress-bar-wrap">
+              <div class="progress-fill"></div>
+              <div class="progress-cat">🐱</div>
+            </div>
+            <div class="progress-paws"><span>🐾 40%</span><span>50%</span><span>120% 🐾</span></div>
           </div>
 
-          <div class="objective">
-            <div class="obj-icon">🐱</div>
-            <div class="obj-text">Gatos laranja</div>
-            <div class="obj-count">18/30</div>
+          <div class="objectives">
+            <div class="objective">
+              <div class="obj-icon">🐱</div>
+              <div class="obj-text">Collect 10 Orange Tabbies</div>
+              <div class="obj-count">0/10</div>
+            </div>
+            <div class="objective">
+              <div class="obj-icon">🐈</div>
+              <div class="obj-text">Rescue 3 Black Cats</div>
+              <div class="obj-count">2/3</div>
+              <div class="obj-check"></div>
+            </div>
           </div>
-          <div class="objective">
-            <div class="obj-icon">🐈</div>
-            <div class="obj-text">Gatos cinza</div>
-            <div class="obj-count">10/10</div>
-            <div class="obj-check">✓</div>
+
+          <div class="boosters">
+            <div class="booster">
+              <div class="booster-icon">🧶<div class="booster-badge">+</div></div>
+              <div class="booster-label">Yarn Ball</div>
+            </div>
+            <div class="booster">
+              <div class="booster-icon">🐟<div class="booster-badge">+</div></div>
+              <div class="booster-label">Fish Treat</div>
+            </div>
+          </div>
+
+          <div class="bottom-btns">
+            <div class="bottom-btn">Shop</div>
+            <div class="bottom-btn" style="background:#5A3FCC;">Boosters</div>
+            <div class="bottom-btn">Menu</div>
           </div>
         </div>
       </div>
@@ -372,16 +617,29 @@
     <div class="screen-wrapper">
       <div class="phone">
         <div class="status-bar">
-          <div class="dot"></div>
-          <div class="dot on"></div>
-          <div class="dot on"></div>
+          <span>12:00</span>
+          <div class="status-icons">
+            <div class="status-dot"></div>
+            <div class="status-dot"></div>
+            <div class="status-dot"></div>
+          </div>
         </div>
-        <div class="screen-body">
-          <div class="win-tag">Fase 3 concluída</div>
+        <div class="night-scene" style="height:70px;">
+          <div class="stars">
+            <div class="star" style="top:15%;left:20%;"></div>
+            <div class="star" style="top:25%;left:60%;"></div>
+            <div class="star" style="top:10%;left:80%;"></div>
+          </div>
+          <div class="rooftop"></div>
+          <div class="cat-silhouette" style="left:30px;">🐱</div>
+          <div class="cat-silhouette" style="right:40px;">😺</div>
+        </div>
+        <div class="win-body">
+          <div class="win-scene">Fase 1 concluída</div>
           <div class="win-stars">⭐⭐⭐</div>
           <div class="win-cats">🐱🐈😺</div>
           <div class="win-title">Gatos resgatados!</div>
-          <div class="win-score">1.240 pontos</div>
+          <div class="win-score">12.450 pontos</div>
           <div class="win-card">
             <div class="win-row">
               <span class="win-row-label">Matches feitos</span>
@@ -407,7 +665,7 @@
 
   <!-- PALETA -->
   <div class="palette-section">
-    <div class="palette-title">Paleta de cores</div>
+    <div class="section-title">Paleta de cores — Visual noturno roxo</div>
     <div class="palette-grid">
       <div class="swatch">
         <div class="swatch-color" style="background:#12112A;"></div>
@@ -444,12 +702,35 @@
         <div class="swatch-hex">#FFD700</div>
         <div class="swatch-name">Selecionado</div>
       </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1A1A3E;"></div>
+        <div class="swatch-hex">#1A1A3E</div>
+        <div class="swatch-name">Azul noturno</div>
+      </div>
     </div>
   </div>
 
-  <div class="footer">
-    Purrfect Match · Mockup de design · KleberCS84
+  <!-- ROADMAP -->
+  <div class="roadmap-section">
+    <div class="section-title" style="margin-top:48px;">Roadmap de implementação</div>
+    <ul class="roadmap-list">
+      <li class="roadmap-item done"><span class="check">✓</span><span class="label">Tabuleiro 8×8 com sprites de gatos</span></li>
+      <li class="roadmap-item done"><span class="check">✓</span><span class="label">Toque e troca de gatos adjacentes</span></li>
+      <li class="roadmap-item done"><span class="check">✓</span><span class="label">Detecção de match-3 e remoção</span></li>
+      <li class="roadmap-item done"><span class="check">✓</span><span class="label">Queda de gatos (gravidade)</span></li>
+      <li class="roadmap-item done"><span class="check">✓</span><span class="label">Pontuação básica</span></li>
+      <li class="roadmap-item done"><span class="check">✓</span><span class="label">Destaque visual do gato selecionado</span></li>
+      <li class="roadmap-item"><span class="check">○</span><span class="label">HUD com score e moves left</span></li>
+      <li class="roadmap-item"><span class="check">○</span><span class="label">Cenário noturno de cidade ao fundo</span></li>
+      <li class="roadmap-item"><span class="check">○</span><span class="label">Barra de progresso com objetivos da fase</span></li>
+      <li class="roadmap-item"><span class="check">○</span><span class="label">Tela inicial com botões funcionais</span></li>
+      <li class="roadmap-item"><span class="check">○</span><span class="label">Tela de fase concluída com estrelas</span></li>
+      <li class="roadmap-item"><span class="check">○</span><span class="label">Boosters (Yarn Ball, Fish Treat)</span></li>
+      <li class="roadmap-item"><span class="check">○</span><span class="label">AdMob para monetização</span></li>
+    </ul>
   </div>
+
+  <div class="footer">Purrfect Match · Design v2 · Visual Noturno Roxo · KleberCS84</div>
 
 </body>
 </html>
