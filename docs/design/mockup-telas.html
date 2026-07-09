@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Purrfect Match — Mockup de Telas</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0D0C1E;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #F0EEFF;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: #9F8FFF;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .project-name {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 500;
+      color: #F0EEFF;
+      margin-bottom: 4px;
+    }
+
+    .project-sub {
+      text-align: center;
+      font-size: 11px;
+      color: #6B5FA8;
+      margin-bottom: 48px;
+      letter-spacing: 1px;
+    }
+
+    .screens {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .screen-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+    .screen-label {
+      font-size: 11px;
+      color: #6B5FA8;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .phone {
+      width: 200px;
+      background: #12112A;
+      border-radius: 28px;
+      border: 1.5px solid #2A2550;
+      overflow: hidden;
+    }
+
+    .status-bar {
+      background: #0D0C1E;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 12px;
+      gap: 5px;
+    }
+
+    .dot { width: 5px; height: 5px; border-radius: 50%; background: #4A3D8F; }
+    .dot.on { background: #9F8FFF; }
+
+    .screen-body { padding: 16px 14px 20px; }
+
+    /* === TELA INICIAL === */
+    .home-icon { text-align: center; font-size: 44px; margin: 8px 0 6px; }
+    .home-title { text-align: center; font-size: 22px; font-weight: 500; color: #F0EEFF; letter-spacing: -0.5px; }
+    .home-sub { text-align: center; font-size: 9px; color: #9F8FFF; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 18px; }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+
+    .mini-cell {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .btn-primary { background: #7B5FFF; color: #F0EEFF; }
+    .btn-secondary { background: transparent; border: 1px solid #4A3D8F; color: #9F8FFF; }
+
+    /* === TELA DE JOGO === */
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .hud-card {
+      background: #1E1C3A;
+      border-radius: 8px;
+      padding: 5px 10px;
+      text-align: center;
+      min-width: 58px;
+    }
+
+    .hud-label { font-size: 8px; color: #6B5FA8; text-transform: uppercase; letter-spacing: 1px; }
+    .hud-value { font-size: 15px; font-weight: 500; color: #F0EEFF; }
+
+    .phase-badge {
+      text-align: center;
+    }
+
+    .phase-num { font-size: 18px; font-weight: 500; color: #F0EEFF; }
+    .phase-lbl { font-size: 8px; color: #6B5FA8; text-transform: uppercase; letter-spacing: 1px; }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 3px;
+      margin-bottom: 12px;
+    }
+
+    .cell {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .cell.selected { outline: 2px solid #FFD700; outline-offset: -1px; }
+
+    .progress-wrap { margin-bottom: 4px; }
+    .progress-bar { background: #1E1C3A; border-radius: 4px; height: 6px; }
+    .progress-fill { background: #7B5FFF; height: 100%; border-radius: 4px; width: 60%; }
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      color: #6B5FA8;
+      margin-bottom: 8px;
+      margin-top: 3px;
+    }
+
+    .objective {
+      background: #1E1C3A;
+      border-radius: 7px;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+
+    .obj-icon { font-size: 16px; }
+    .obj-text { font-size: 9px; color: #9F8FFF; flex: 1; }
+    .obj-count { font-size: 10px; color: #F0EEFF; font-weight: 500; }
+    .obj-check { font-size: 11px; color: #4CAF50; }
+
+    /* === TELA DE VITÓRIA === */
+    .win-tag {
+      text-align: center;
+      font-size: 9px;
+      color: #6B5FA8;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      margin-top: 6px;
+    }
+
+    .win-stars { text-align: center; font-size: 26px; letter-spacing: 4px; margin: 4px 0; }
+    .win-cats { text-align: center; font-size: 28px; margin: 6px 0; }
+    .win-title { text-align: center; font-size: 15px; font-weight: 500; color: #F0EEFF; margin-bottom: 2px; }
+    .win-score { text-align: center; font-size: 11px; color: #9F8FFF; margin-bottom: 12px; }
+
+    .win-card {
+      background: #1E1C3A;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+
+    .win-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      padding: 3px 0;
+    }
+
+    .win-row-label { color: #6B5FA8; }
+    .win-row-value { color: #F0EEFF; }
+    .win-row-bonus { color: #9F8FFF; }
+
+    /* === PALETA === */
+    .palette-section {
+      max-width: 700px;
+      margin: 60px auto 0;
+    }
+
+    .palette-title {
+      font-size: 11px;
+      color: #6B5FA8;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .palette-grid {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch-color {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .swatch-hex { font-size: 9px; color: #6B5FA8; font-family: monospace; }
+    .swatch-name { font-size: 9px; color: #9F8FFF; text-align: center; max-width: 60px; }
+
+    .footer {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 10px;
+      color: #4A3D8F;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Mockup de telas</h1>
+  <div class="project-name">Purrfect Match</div>
+  <div class="project-sub">Jogo match-3 · Java · Android</div>
+
+  <div class="screens">
+
+    <!-- TELA INICIAL -->
+    <div class="screen-wrapper">
+      <div class="phone">
+        <div class="status-bar">
+          <div class="dot"></div>
+          <div class="dot on"></div>
+          <div class="dot on"></div>
+        </div>
+        <div class="screen-body">
+          <div class="home-icon">🐱</div>
+          <div class="home-title">Purrfect Match</div>
+          <div class="home-sub">cat rescue</div>
+          <div class="mini-grid">
+            <div class="mini-cell" style="background:#2A1F4A;">🐱</div>
+            <div class="mini-cell" style="background:#1A2A1A;">🐈</div>
+            <div class="mini-cell" style="background:#2A2A1A;">😺</div>
+            <div class="mini-cell" style="background:#2A1A1A;">🐾</div>
+            <div class="mini-cell" style="background:#1A2A2A;">😸</div>
+            <div class="mini-cell" style="background:#2A1F4A;">🐱</div>
+            <div class="mini-cell" style="background:#2A2A1A;">😺</div>
+            <div class="mini-cell" style="background:#1A2A1A;">🐈</div>
+          </div>
+          <div class="btn btn-primary">Jogar</div>
+          <div class="btn btn-secondary">Fases</div>
+        </div>
+      </div>
+      <div class="screen-label">Tela inicial</div>
+    </div>
+
+    <!-- TELA DE JOGO -->
+    <div class="screen-wrapper">
+      <div class="phone">
+        <div class="status-bar">
+          <div class="dot on"></div>
+          <div class="dot on"></div>
+          <div class="dot on"></div>
+        </div>
+        <div class="screen-body">
+          <div class="hud">
+            <div class="hud-card">
+              <div class="hud-label">pontos</div>
+              <div class="hud-value">1.240</div>
+            </div>
+            <div class="phase-badge">
+              <div class="phase-lbl">fase</div>
+              <div class="phase-num">3</div>
+            </div>
+            <div class="hud-card">
+              <div class="hud-label">jogadas</div>
+              <div class="hud-value">12</div>
+            </div>
+          </div>
+
+          <div class="board">
+            <div class="cell" style="background:#2A1F4A;">🐱</div>
+            <div class="cell selected" style="background:#1A2A1A;">🐈</div>
+            <div class="cell" style="background:#2A2A1A;">😺</div>
+            <div class="cell" style="background:#2A1F4A;">🐱</div>
+            <div class="cell" style="background:#1A2A2A;">😸</div>
+            <div class="cell" style="background:#1A2A1A;">🐈</div>
+            <div class="cell" style="background:#1A2A1A;">🐈</div>
+            <div class="cell" style="background:#2A1A1A;">🐾</div>
+            <div class="cell" style="background:#2A2A1A;">😺</div>
+            <div class="cell" style="background:#2A1F4A;">🐱</div>
+            <div class="cell" style="background:#2A1A1A;">🐾</div>
+            <div class="cell" style="background:#2A1F4A;">🐱</div>
+            <div class="cell" style="background:#1A2A2A;">😸</div>
+            <div class="cell" style="background:#1A2A1A;">🐈</div>
+            <div class="cell" style="background:#2A2A1A;">😺</div>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+            <div class="progress-labels"><span>objetivo da fase</span><span>60%</span></div>
+          </div>
+
+          <div class="objective">
+            <div class="obj-icon">🐱</div>
+            <div class="obj-text">Gatos laranja</div>
+            <div class="obj-count">18/30</div>
+          </div>
+          <div class="objective">
+            <div class="obj-icon">🐈</div>
+            <div class="obj-text">Gatos cinza</div>
+            <div class="obj-count">10/10</div>
+            <div class="obj-check">✓</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Tela de jogo</div>
+    </div>
+
+    <!-- TELA DE VITÓRIA -->
+    <div class="screen-wrapper">
+      <div class="phone">
+        <div class="status-bar">
+          <div class="dot"></div>
+          <div class="dot on"></div>
+          <div class="dot on"></div>
+        </div>
+        <div class="screen-body">
+          <div class="win-tag">Fase 3 concluída</div>
+          <div class="win-stars">⭐⭐⭐</div>
+          <div class="win-cats">🐱🐈😺</div>
+          <div class="win-title">Gatos resgatados!</div>
+          <div class="win-score">1.240 pontos</div>
+          <div class="win-card">
+            <div class="win-row">
+              <span class="win-row-label">Matches feitos</span>
+              <span class="win-row-value">24</span>
+            </div>
+            <div class="win-row">
+              <span class="win-row-label">Jogadas usadas</span>
+              <span class="win-row-value">18 / 20</span>
+            </div>
+            <div class="win-row">
+              <span class="win-row-label">Bônus de jogadas</span>
+              <span class="win-row-bonus">+200 pts</span>
+            </div>
+          </div>
+          <div class="btn btn-primary">Próxima fase</div>
+          <div class="btn btn-secondary">Menu</div>
+        </div>
+      </div>
+      <div class="screen-label">Fase concluída</div>
+    </div>
+
+  </div>
+
+  <!-- PALETA -->
+  <div class="palette-section">
+    <div class="palette-title">Paleta de cores</div>
+    <div class="palette-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#12112A;"></div>
+        <div class="swatch-hex">#12112A</div>
+        <div class="swatch-name">Fundo principal</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1E1C3A;"></div>
+        <div class="swatch-hex">#1E1C3A</div>
+        <div class="swatch-name">Fundo cards</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#7B5FFF;"></div>
+        <div class="swatch-hex">#7B5FFF</div>
+        <div class="swatch-name">Roxo vibrante</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#9F8FFF;"></div>
+        <div class="swatch-hex">#9F8FFF</div>
+        <div class="swatch-name">Roxo suave</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#4A3D8F;"></div>
+        <div class="swatch-hex">#4A3D8F</div>
+        <div class="swatch-name">Borda sutil</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F0EEFF;"></div>
+        <div class="swatch-hex">#F0EEFF</div>
+        <div class="swatch-name">Texto principal</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FFD700;"></div>
+        <div class="swatch-hex">#FFD700</div>
+        <div class="swatch-name">Selecionado</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Purrfect Match · Mockup de design · KleberCS84
+  </div>
+
+</body>
+</html>
