@@ -3,33 +3,45 @@
 Documento de decisões de design das telas do jogo, criado antes da
 implementação para guiar o desenvolvimento visual e de UX.
 
-## Identidade visual
+## Decisão final de identidade visual
 
-### Paleta de cores
+**Visual escolhido: Noturno Roxo** (Imagem 3 gerada pelo Nanobanana)
+
+Paleta azul/roxo escuro com fundo de cenário noturno (telhados de cidade,
+gatos nas chaminés, janela iluminada). Essa direção foi escolhida por:
+
+- Identidade visual única — poucos jogos match-3 usam paleta noturna fria
+- Reforça a narrativa de resgate: gatos perdidos à noite na cidade
+- Contraste alto entre o fundo escuro e os sprites coloridos dos gatos
+- Atmosfera emocional que cria apego ao tema
+
+O arquivo `mockup-escolhido.png` nesta pasta mostra o mockup de referência.
+
+---
+
+## Paleta de cores
 
 | Nome | Hex | Uso |
 |---|---|---|
 | Fundo principal | `#12112A` | Background de todas as telas |
 | Fundo secundário | `#1E1C3A` | Cards, HUD, painéis internos |
-| Roxo vibrante | `#7B5FFF` | Botão primário, cor de destaque |
+| Roxo vibrante | `#7B5FFF` | Botões primários, destaques |
 | Roxo suave | `#9F8FFF` | Textos secundários, labels |
 | Roxo escuro | `#6B5FA8` | Textos de apoio, labels menores |
 | Borda sutil | `#4A3D8F` | Bordas de botões secundários |
-| Texto principal | `#F0EEFF` | Títulos, valores, texto em destaque |
-| Selecionado | `#FFD700` | Borda amarela do gato selecionado |
+| Texto principal | `#F0EEFF` | Títulos, valores em destaque |
+| Selecionado | `#FFD700` | Borda dourada do gato selecionado |
+| Azul noturno | `#1A1A3E` | Fundo do cenário de cidade |
 
-**Justificativa**: o tema roxo escuro remete ao céu noturno urbano — cenário
-onde gatos perdidos precisam ser resgatados. É incomum em jogos match-3
-(que costumam usar paletas vibrantes e coloridas), o que diferencia
-visualmente o Purrfect Match.
+---
 
-### Tipografia
+## Tipografia
 
 - **Display (título do jogo)**: 20px, weight 500, cor `#F0EEFF`
 - **Subtítulo**: 9px, uppercase, letter-spacing 2px, cor `#9F8FFF`
 - **Valores do HUD** (pontos, jogadas): 14px, weight 500, cor `#F0EEFF`
 - **Labels do HUD**: 8px, uppercase, letter-spacing 1px, cor `#6B5FA8`
-- **Corpo / objetivos**: 9–10px, cor `#9F8FFF`
+- **Objetivos da fase**: texto descritivo claro, ex: "Collect 10 Orange Tabbies"
 
 ---
 
@@ -41,72 +53,68 @@ visualmente o Purrfect Match.
 a começar com o mínimo de fricção.
 
 **Elementos**:
-- Ícone central de gato (âncora visual)
-- Título "Purrfect Match" + subtítulo "cat rescue" em uppercase
-- Mini-grid 4×2 de gatos como decoração animada (mostra o gameplay)
+- Cenário noturno de cidade ao fundo (telhados, chaminés, estrelas)
+- Gatos silhueta nos telhados como decoração
+- Título "Purrfect Match" + subtítulo "cat rescue"
+- Mini-grid de gatos como prévia do gameplay
 - Botão primário "Jogar" (roxo vibrante)
-- Botão secundário "Fases" (apenas borda)
-
-**Decisão de design**: a mini-grid de gatos serve como prévia do gameplay
-logo na tela inicial — o jogador entende o jogo antes de apertar qualquer
-botão.
+- Botão secundário "Fases"
 
 ---
 
 ### 2. Tela de jogo
 
-**Objetivo**: mostrar toda a informação necessária sem poluir a área do
-tabuleiro.
+**Objetivo**: mostrar toda a informação necessária sem poluir o tabuleiro.
 
-**Elementos**:
-- HUD superior: pontos (esquerda) · número da fase (centro) · jogadas
-  restantes (direita)
-- Tabuleiro 8×8 de gatos (área principal)
-- Barra de progresso do objetivo atual
-- Lista de objetivos da fase com contadores e check quando concluído
+**Elementos confirmados pelo mockup da IA**:
+- HUD superior: Score (esquerda) + Moves Left (direita) com ícone de patinha
+- Tabuleiro 8x8 com gatos sobre fundo azul/roxo escuro
+- Borda dourada #FFD700 no gato selecionado
+- Barra de progresso com ícone de gato deslizante e ícones de patinha
+- Objetivos da fase descritos em texto: "Collect 10 Orange Tabbies / Rescue 3 Black Cats"
+- Boosters: Yarn Ball (novelo de lã) e Fish Treat (petisco de peixe)
+- Botões inferiores: Shop · Boosters · Menu
 
-**Decisão de design**: o HUD foi colocado acima do tabuleiro (não abaixo)
-porque o jogador olha naturalmente para cima ao checar informações,
-mantendo os olhos próximos do início do tabuleiro onde a ação começa.
-
-**Destaque de seleção**: borda amarela (`#FFD700`) ao redor do gato
-selecionado — contrasta com o roxo escuro e é universalmente reconhecido
-como "selecionado" em jogos.
+**Novos elementos descobertos nos mockups da IA** (implementar em etapas futuras):
+- Boosters com ícones temáticos — relevantes para monetização
+- Barra de progresso com marcadores percentuais (40%, 50%, 120%)
+- Objetivos escritos por extenso na tela (mais claro para o jogador)
 
 ---
 
 ### 3. Tela de fase concluída
 
-**Objetivo**: recompensar o jogador, mostrar o desempenho e motivar a
-continuar.
+**Objetivo**: recompensar o jogador e motivar a continuar.
 
 **Elementos**:
-- Label "FASE X CONCLUÍDA" em uppercase
-- Sistema de 3 estrelas (avaliação de desempenho)
-- Gatos "resgatados" como recompensa emocional (tema narrativo)
-- Resumo de desempenho: matches feitos, jogadas usadas, bônus
+- Label "FASE X CONCLUÍDA"
+- Sistema de 3 estrelas
+- Gatos resgatados como recompensa emocional
+- Resumo: matches feitos, jogadas usadas, bônus de jogadas sobrando
 - Botão "Próxima fase" (primário) e "Menu" (secundário)
-
-**Decisão de design**: mostrar os gatos resgatados reforça a narrativa de
-resgate — o jogador não "ganhou pontos", ele "salvou gatinhos". Isso
-cria apego emocional e motiva a continuar jogando (relevante para
-monetização: jogador engajado é mais propenso a comprar vidas extras).
 
 ---
 
 ## Elemento de assinatura
 
-O elemento visual mais memorável do Purrfect Match é o **contraste entre
-o fundo roxo escuro e os sprites de gatos coloridos** — enquanto outros
-jogos match-3 usam fundos brancos ou coloridos que competem com as peças,
-aqui o fundo recua completamente, fazendo os gatos "saltarem" da tela.
+O cenário noturno de cidade com gatos nas chaminés e janelas iluminadas
+é o elemento mais memorável do Purrfect Match. Diferencia o jogo de outros
+match-3 e reforça a narrativa de resgate noturno.
 
 ---
 
-## Próximos passos de implementação
+## Roadmap de implementação
 
+- [x] Tabuleiro 8x8 com sprites de gatos
+- [x] Toque e troca de gatos adjacentes
+- [x] Detecção de match-3 e remoção
+- [x] Queda de gatos (gravidade)
+- [x] Pontuação básica
+- [x] Destaque visual do gato selecionado
+- [ ] HUD com score e moves left
+- [ ] Cenário noturno de cidade ao fundo
+- [ ] Barra de progresso com objetivos da fase
 - [ ] Tela inicial com botões funcionais
-- [ ] HUD de pontos e jogadas na tela de jogo
-- [ ] Sistema de objetivos por fase
-- [ ] Barra de progresso do objetivo
 - [ ] Tela de fase concluída com estrelas
+- [ ] Boosters (Yarn Ball, Fish Treat)
+- [ ] AdMob para monetização
