@@ -8,12 +8,14 @@ public class Tabuleiro {
     private Gato[][] grade; // matriz de objetos Gato
     private Random random;
     private int pontuacao;
+    private int jogadasRestantes;
 
 
     // Construtor - cria o tabuleiro com gatos aleatórios
     public Tabuleiro(){
         random = new Random();
         grade = new Gato [TAMANHO][TAMANHO];
+        jogadasRestantes = 20;
         inicializar();
     }
 
@@ -34,6 +36,18 @@ public class Tabuleiro {
 
     public int getPontuacao(){
         return pontuacao;
+    }
+
+    public int getJogadasRestantes(){
+        return jogadasRestantes;
+    }
+
+    public boolean usarJogadas(){
+        if (jogadasRestantes > 0){
+            jogadasRestantes--;
+            return true;
+        }
+        return false;
     }
 
     public void trocar(int linha1, int coluna1, int linha2, int coluna2){

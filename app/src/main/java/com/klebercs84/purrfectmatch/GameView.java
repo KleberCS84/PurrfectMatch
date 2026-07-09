@@ -15,6 +15,9 @@ public class GameView extends View{
     private Paint paint;
     private int tamanhoCell;
     private Bitmap[] sprites;
+    private Bitmap icPawGold;
+    private Bitmap icStarPurple;
+    private Bitmap hudCards;
     private int linhaSelecionada = -1;
     private int colunaSelecionada = -1;
     private int alturaView;
@@ -36,6 +39,9 @@ public class GameView extends View{
         sprites[Gato.CINZA] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_cinza);
         sprites[Gato.RAJADO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_rajado);
         sprites[Gato.CARAMELO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_caramelo);
+        icPawGold = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_paw_gold);
+        icStarPurple = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_star_purple);
+        hudCards = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_cards);
     }
 
     @Override
@@ -78,13 +84,32 @@ public class GameView extends View{
             }
         }
 
-        // Exibe a pontuação acima do tabuleiro
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.WHITE);
-        paint.setTextSize(60);
-        paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("Pontos: " + tabuleiro.getPontuacao(), getWidth() / 2f, offsetY / 2f, paint);
+        // === HUD ===
+        int hudH = (int) (offsetY * 0.4f);
+        int hudY = (offsetY - hudH) / 2;
+
+        // Desenha os dois cards como uma única imagem
+        if (hudCards !=null){
+            Bitmap cards = Bitmap.createScaledBitmap(hudCards, getWidth(), hudH, true);
+            canvas.drawBitmap(cards, 0, hudY, null);
+        }
+
+        // Números sobre os cards
+        Paint hudPaint  = new Paint(Paint.ANTI_ALIAS_FLAG);
+        hudPaint.setColor(Color.rgb(240, 238,255));
+        hudPaint.setFakeBoldText(true);
+        hudPaint.setTextAlign(Paint.Align.CENTER);
+        hudPaint.setTextSize(hudH * 0.35f);
+
+        // Score - centro da área escura do card esquerdo ( ~30% da largura)
+        canvas.drawText(String.valueOf(tabuleiro.getPontuacao()), getWidth() * 0.30f, hudY + hudH * 0.78f, hudPaint);
+
+        // Moves - centro da área escura do card direito (~78% da largura)
+        canvas.drawText(String.valueOf(tabuleiro.getJogadasRestantes()), getWidth() * 0.78f, hudY + hudH * 0.78f, hudPaint);
     }
+
+
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
@@ -109,9 +134,14 @@ public class GameView extends View{
         } else {
             // segundo toque -- tenta trocar
             tabuleiro.getGato(linhaSelecionada, colunaSelecionada).setSelecionado(false);
-            tabuleiro.trocar(linhaSelecionada, colunaSelecionada, linha, coluna);
-            tabuleiro.verificarMatches();
-            tabuleiro.aplicarGravidade();
+            //tabuleiro.trocar(linhaSelecionada, colunaSelecionada, linha, coluna);
+            //tabuleiro.verificarMatches();
+            //tabuleiro.aplicarGravidade();
+            if (tabuleiro.usarJogadas()){
+                tabuleiro.trocar(linhaSelecionada, colunaSelecionada, linha, coluna);
+                tabuleiro.verificarMatches();
+                tabuleiro.aplicarGravidade();
+            }
             linhaSelecionada = -1;
             colunaSelecionada = -1;
         }
