@@ -18,10 +18,12 @@ public class GameView extends View{
     private Bitmap icPawGold;
     private Bitmap icStarPurple;
     private Bitmap hudCards;
+    private Bitmap bgNightCity;
     private int linhaSelecionada = -1;
     private int colunaSelecionada = -1;
     private int alturaView;
     private int offsetY;
+    private int offsetX;
 
 
     public GameView(Context context){
@@ -42,14 +44,17 @@ public class GameView extends View{
         icPawGold = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_paw_gold);
         icStarPurple = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_star_purple);
         hudCards = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_cards);
+        bgNightCity = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_night_city);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh){
-        tamanhoCell = w / Tabuleiro.TAMANHO;
+        tamanhoCell = (int) (w * 0.94f) / Tabuleiro.TAMANHO;
         alturaView = h;
         int alturaTotal = tamanhoCell * Tabuleiro.TAMANHO;
         offsetY = (alturaView - alturaTotal) / 2; // centraliza verticalmente
+        //offsetY = (int) (h * 0.3f);
+        offsetX = (w - tamanhoCell * Tabuleiro.TAMANHO) / 2;
     }
 
     @Override
@@ -57,7 +62,14 @@ public class GameView extends View{
         super.onDraw(canvas);
 
         // Fundo escuro
-        canvas.drawColor(Color.rgb(20,20,40));
+        //canvas.drawColor(Color.rgb(20,20,40));
+        // Background noturno
+        if (bgNightCity !=null){
+            Bitmap bg = Bitmap.createScaledBitmap(bgNightCity, getWidth(), getHeight(), true);
+            canvas.drawBitmap(bg, 0,0,null);
+        } else {
+            canvas.drawColor(Color.rgb(20,20,40));
+        }
 
         for (int linha = 0; linha < Tabuleiro.TAMANHO; linha++){
             for (int coluna = 0; coluna < Tabuleiro.TAMANHO; coluna ++){
@@ -66,13 +78,15 @@ public class GameView extends View{
                 Bitmap sprite = sprites[gato.getTipo()];
 
                 // Posição da imagem na tela
-                float x = coluna * tamanhoCell;
-                float y = linha * tamanhoCell + offsetY;
+                int padding = (int) (tamanhoCell * 0.02f);
+                float x = coluna * tamanhoCell + offsetX + padding;
+                float y = linha * tamanhoCell + offsetY + padding;
+                int tamanhoSprite = tamanhoCell - padding * 2;
 
                 // Redimesiona o sprite para caber na célula
-                Bitmap redimendionado = Bitmap.createScaledBitmap(sprite, tamanhoCell, tamanhoCell, true);
+                Bitmap redimensionado = Bitmap.createScaledBitmap(sprite, tamanhoSprite, tamanhoSprite, true);
 
-                canvas.drawBitmap(redimendionado, x, y, paint);
+                canvas.drawBitmap(redimensionado, x, y, paint);
 
                 // Borda de destaque no gato selecionado
                 if (gato.isSelecionado()){
@@ -118,7 +132,7 @@ public class GameView extends View{
         }
 
         // Calcula qual céllula foi tocada
-        int coluna = (int) (event.getX() / tamanhoCell);
+        int coluna = (int) ((event.getX() - offsetX)/ tamanhoCell);
         int linha = (int) ((event.getY() - offsetY) / tamanhoCell);
 
         // Ignora toque fora do tabuleiro

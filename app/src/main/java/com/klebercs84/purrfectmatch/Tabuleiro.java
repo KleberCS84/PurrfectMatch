@@ -3,7 +3,7 @@ package com.klebercs84.purrfectmatch;
 import java.util.Random;
 
 public class Tabuleiro {
-    public static final int TAMANHO = 8; // grade 8x8
+    public static final int TAMANHO = 7; // grade 8x8
 
     private Gato[][] grade; // matriz de objetos Gato
     private Random random;
