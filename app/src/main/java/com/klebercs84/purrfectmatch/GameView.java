@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.MotionEvent;
+import com.google.android.material.tabs.TabLayout;
+import java.util.Map;
 
 public class GameView extends View{
     private Tabuleiro tabuleiro;
@@ -18,6 +20,12 @@ public class GameView extends View{
     private Bitmap icPawGold;
     private Bitmap icStarPurple;
     private Bitmap hudCards;
+    private Bitmap hudCardObjetivos;
+    private Bitmap hudProgressBar;
+    private Bitmap hudCardFase;
+    private Bitmap btnShop;
+    private Bitmap btnBoosters;
+    private Bitmap btnMenu;
     private Bitmap bgNightCity;
     private int linhaSelecionada = -1;
     private int colunaSelecionada = -1;
@@ -45,6 +53,12 @@ public class GameView extends View{
         icStarPurple = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_star_purple);
         hudCards = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_cards);
         bgNightCity = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_night_city);
+        hudCardObjetivos = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_card_objetivos);
+        hudProgressBar = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_progress_bar);
+        hudCardFase = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_card_fase);
+        btnShop = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_shop);
+        btnBoosters = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_boosters);
+        btnMenu = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_menu);
     }
 
     @Override
@@ -52,8 +66,8 @@ public class GameView extends View{
         tamanhoCell = (int) (w * 0.94f) / Tabuleiro.TAMANHO;
         alturaView = h;
         int alturaTotal = tamanhoCell * Tabuleiro.TAMANHO;
-        offsetY = (alturaView - alturaTotal) / 2; // centraliza verticalmente
-        //offsetY = (int) (h * 0.3f);
+        //offsetY = (alturaView - alturaTotal) / 2; // centraliza verticalmente
+        offsetY = (int) (h * 0.29f);
         offsetX = (w - tamanhoCell * Tabuleiro.TAMANHO) / 2;
     }
 
@@ -120,6 +134,72 @@ public class GameView extends View{
 
         // Moves - centro da área escura do card direito (~78% da largura)
         canvas.drawText(String.valueOf(tabuleiro.getJogadasRestantes()), getWidth() * 0.78f, hudY + hudH * 0.78f, hudPaint);
+
+        // === ÁREA INFERIOR ===
+        int areaX = 16;
+        int areaW = getWidth() - areaX * 2;
+        int tabuleiroBottom = offsetY + tamanhoCell * Tabuleiro.TAMANHO;
+        int espacoTotal = getHeight() - tabuleiroBottom;
+
+        // --- Barra de progresso ---
+        int barH = (int) (espacoTotal * 0.22f);
+        int barY = tabuleiroBottom + (int) (espacoTotal * 0.04f);
+
+        if(hudProgressBar != null){
+            Bitmap bar = Bitmap.createScaledBitmap(hudProgressBar, areaW, barH, true);
+            canvas.drawBitmap(bar, areaX, barY, null);
+        }
+
+        // --- Card de objetivos ---
+        int cardFaseH = (int) (espacoTotal * 0.28f);
+        int carFaseY = barY + barH + (int) (espacoTotal * 0.02f);
+
+        if (hudCardFase != null){
+            Bitmap card = Bitmap.createScaledBitmap(hudCardFase, areaW, cardFaseH, true);
+            canvas.drawBitmap(card, areaX, carFaseY, null);
+        }
+
+        // Números dinâmicos sobre o card (contadores dos objetivos)
+        Fase fase = tabuleiro.getFase();
+        Paint objPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        objPaint.setFakeBoldText(true);
+        objPaint.setTextAlign(Paint.Align.CENTER);
+        objPaint.setTextSize(cardFaseH * 0.38f);
+
+        int i = 0;
+        for(Map.Entry<Integer, Integer> entry : fase.getObjetivos().entrySet()){
+            int coletado = fase.getProgresso().get(entry.getKey());
+            int meta = entry.getValue();
+            boolean feito = coletado >= meta;
+
+            objPaint.setColor(feito ? Color.rgb(80,200,80) : Color.rgb(240,238,255));
+
+            float posX = areaX + areaW * (i == 0 ? 0.48f : 0.76f);
+            float posY = carFaseY + cardFaseH * 0.92f;
+            canvas.drawText(String.valueOf(coletado), posX, posY, objPaint);
+            i++;
+        }
+
+        // --- Botões Shop / Boosters / Menu ---
+        int btnH = (int) (espacoTotal * 0.26f);
+        int btnY = carFaseY + cardFaseH + (int) (espacoTotal * 0.02f);
+        int btnW = (int) (areaW * 0.32f);
+        int gapBtn = (areaW - btnW * 3) / 4;
+
+        if (btnShop != null){
+            Bitmap b = Bitmap.createScaledBitmap(btnShop, btnW, btnH, true);
+            canvas.drawBitmap(b, areaX + gapBtn, btnY, null);
+        }
+        if (btnBoosters != null){
+            Bitmap b = Bitmap.createScaledBitmap(btnBoosters, btnW, btnH, true);
+            canvas.drawBitmap(b, areaX + gapBtn + btnW + gapBtn, btnY, null);
+        }
+
+        if (btnMenu != null){
+            Bitmap b = Bitmap.createScaledBitmap(btnMenu, btnW, btnH, true);
+            canvas.drawBitmap(b, areaX + (btnW + gapBtn) * 2, btnY, null);
+        }
+
     }
 
 

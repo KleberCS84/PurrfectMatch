@@ -9,6 +9,7 @@ public class Tabuleiro {
     private Random random;
     private int pontuacao;
     private int jogadasRestantes;
+    private Fase fase;
 
 
     // Construtor - cria o tabuleiro com gatos aleatórios
@@ -16,6 +17,12 @@ public class Tabuleiro {
         random = new Random();
         grade = new Gato [TAMANHO][TAMANHO];
         jogadasRestantes = 20;
+
+        // Fase 1: coletar 10 gatos laranja e 8 gatos cinza
+        fase = new Fase(1, 20);
+        fase.adicionarObjetivo(Gato.LARANJA, 10);
+        fase.adicionarObjetivo(Gato.CINZA, 8);
+
         inicializar();
     }
 
@@ -40,6 +47,10 @@ public class Tabuleiro {
 
     public int getJogadasRestantes(){
         return jogadasRestantes;
+    }
+
+    public Fase getFase() {
+        return fase;
     }
 
     public boolean usarJogadas(){
@@ -106,6 +117,7 @@ public class Tabuleiro {
         for (int linha = 0; linha<TAMANHO;linha++){
             for (int coluna = 0; coluna<TAMANHO; coluna++){
                 if (paraRemover[linha][coluna]){
+                    fase.registrarColeta(grade[linha][coluna].getTipo());
                     // Substitui por um gato novo aleatório
                     //grade[linha][coluna] = new Gato(random.nextInt(Gato.TOTAL_TIPOS)); linha substituida pela linha abaixo para queda dos gatos
                     grade[linha][coluna] = null; // marca como vazio
