@@ -3,7 +3,7 @@ package com.klebercs84.purrfectmatch;
 import java.util.Random;
 
 public class Tabuleiro {
-    public static final int TAMANHO = 7; // grade 8x8
+    public static final int TAMANHO = 7; // grade 7x7
 
     private Gato[][] grade; // matriz de objetos Gato
     private Random random;
@@ -53,7 +53,7 @@ public class Tabuleiro {
         return fase;
     }
 
-    public boolean usarJogadas(){
+    public boolean usarJogada(){
         if (jogadasRestantes > 0){
             jogadasRestantes--;
             return true;
@@ -113,7 +113,7 @@ public class Tabuleiro {
     }
 
     private void removerMatches(boolean[][] paraRemover){
-        Random random = new Random();
+
         for (int linha = 0; linha<TAMANHO;linha++){
             for (int coluna = 0; coluna<TAMANHO; coluna++){
                 if (paraRemover[linha][coluna]){
@@ -146,7 +146,7 @@ public class Tabuleiro {
         }
 
         // Preenche os espaços vazios no topo com novos gatos
-        Random random = new Random();
+
         for (int linha = 0; linha < TAMANHO; linha++){
             for (int coluna = 0; coluna < TAMANHO; coluna++){
                 if (grade[linha][coluna] == null){

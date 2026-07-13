@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.MotionEvent;
-import com.google.android.material.tabs.TabLayout;
 import java.util.Map;
 
 public class GameView extends View{
@@ -74,101 +72,100 @@ public class GameView extends View{
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
+        desenharBackground(canvas);
+        desenharTabuleiro(canvas);
+        desenharHUD(canvas);
+        desenharBarraProgresso(canvas);
+        desenharCardObjetivos(canvas);
+        desenharBotoes(canvas);
 
-        // Fundo escuro
-        //canvas.drawColor(Color.rgb(20,20,40));
-        // Background noturno
-        if (bgNightCity !=null){
+    }
+
+    private void desenharBackground(Canvas canvas) {
+        if (bgNightCity != null) {
             Bitmap bg = Bitmap.createScaledBitmap(bgNightCity, getWidth(), getHeight(), true);
-            canvas.drawBitmap(bg, 0,0,null);
+            canvas.drawBitmap(bg, 0, 0, null);
         } else {
-            canvas.drawColor(Color.rgb(20,20,40));
+            canvas.drawColor(Color.rgb(20, 20, 40));
         }
+    }
 
-        for (int linha = 0; linha < Tabuleiro.TAMANHO; linha++){
-            for (int coluna = 0; coluna < Tabuleiro.TAMANHO; coluna ++){
-                Gato gato = tabuleiro.getGato(linha,coluna);
-                if (gato == null) continue; // pula células vazias
-                Bitmap sprite = sprites[gato.getTipo()];
+    private void desenharTabuleiro(Canvas canvas) {
+        int padding = (int)(tamanhoCell * 0.02f);
 
-                // Posição da imagem na tela
-                int padding = (int) (tamanhoCell * 0.02f);
+        Paint selecaoPaint = new Paint();
+        selecaoPaint.setStyle(Paint.Style.STROKE);
+        selecaoPaint.setColor(Color.rgb(255, 255, 0));
+        selecaoPaint.setStrokeWidth(6);
+
+        for (int linha = 0; linha < Tabuleiro.TAMANHO; linha++) {
+            for (int coluna = 0; coluna < Tabuleiro.TAMANHO; coluna++) {
+                Gato gato = tabuleiro.getGato(linha, coluna);
+                if (gato == null) continue;
+
                 float x = coluna * tamanhoCell + offsetX + padding;
-                float y = linha * tamanhoCell + offsetY + padding;
+                float y = linha  * tamanhoCell + offsetY + padding;
                 int tamanhoSprite = tamanhoCell - padding * 2;
 
-                // Redimesiona o sprite para caber na célula
-                Bitmap redimensionado = Bitmap.createScaledBitmap(sprite, tamanhoSprite, tamanhoSprite, true);
+                Bitmap redimensionado = Bitmap.createScaledBitmap(
+                        sprites[gato.getTipo()], tamanhoSprite, tamanhoSprite, true);
+                canvas.drawBitmap(redimensionado, x, y, null);
 
-                canvas.drawBitmap(redimensionado, x, y, paint);
-
-                // Borda de destaque no gato selecionado
-                if (gato.isSelecionado()){
-                    paint.setStyle(Paint.Style.STROKE);
-                    paint.setColor(Color.rgb(255, 255, 0)); // amarelo
-                    paint.setStrokeWidth(6);
-                    canvas.drawRect(x, y, x + tamanhoCell, y + tamanhoCell, paint);
+                if (gato.isSelecionado()) {
+                    canvas.drawRect(x, y, x + tamanhoCell, y + tamanhoCell, selecaoPaint);
                 }
             }
         }
+    }
 
-        // === HUD ===
-        int hudH = (int) (offsetY * 0.4f);
+    private void desenharHUD(Canvas canvas) {
+        int hudH = (int)(offsetY * 0.4f);
         int hudY = (offsetY - hudH) / 2;
 
-        // Desenha os dois cards como uma única imagem
-        if (hudCards !=null){
+        if (hudCards != null) {
             Bitmap cards = Bitmap.createScaledBitmap(hudCards, getWidth(), hudH, true);
             canvas.drawBitmap(cards, 0, hudY, null);
         }
 
-        // Números sobre os cards
-        Paint hudPaint  = new Paint(Paint.ANTI_ALIAS_FLAG);
-        hudPaint.setColor(Color.rgb(240, 238,255));
+        Paint hudPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        hudPaint.setColor(Color.rgb(240, 238, 255));
         hudPaint.setFakeBoldText(true);
         hudPaint.setTextAlign(Paint.Align.CENTER);
         hudPaint.setTextSize(hudH * 0.35f);
 
-        // Score - centro da área escura do card esquerdo ( ~30% da largura)
-        canvas.drawText(String.valueOf(tabuleiro.getPontuacao()), getWidth() * 0.30f, hudY + hudH * 0.78f, hudPaint);
+        canvas.drawText(String.valueOf(tabuleiro.getPontuacao()),
+                getWidth() * 0.30f, hudY + hudH * 0.78f, hudPaint);
+        canvas.drawText(String.valueOf(tabuleiro.getJogadasRestantes()),
+                getWidth() * 0.78f, hudY + hudH * 0.78f, hudPaint);
+    }
 
-        // Moves - centro da área escura do card direito (~78% da largura)
-        canvas.drawText(String.valueOf(tabuleiro.getJogadasRestantes()), getWidth() * 0.78f, hudY + hudH * 0.78f, hudPaint);
-
-        // === ÁREA INFERIOR ===
-        Fase fase = tabuleiro.getFase();
-        int areaX          = 16;
-        int areaW          = getWidth() - areaX * 2;
+    private void desenharBarraProgresso(Canvas canvas) {
+        int areaX = 16;
+        int areaW = getWidth() - areaX * 2;
         int tabuleiroBottom = offsetY + tamanhoCell * Tabuleiro.TAMANHO;
-        int espacoTotal    = getHeight() - tabuleiroBottom;
-
-// --- Barra de progresso (card vazio + preenchimento via código) ---
+        int espacoTotal = getHeight() - tabuleiroBottom;
         int barH = (int)(espacoTotal * 0.20f);
         int barY = tabuleiroBottom + (int)(espacoTotal * 0.03f);
 
-// Fundo da barra (asset vazio com patinhas)
         if (hudProgressBar != null) {
             Bitmap bar = Bitmap.createScaledBitmap(hudProgressBar, areaW, barH, true);
             canvas.drawBitmap(bar, areaX, barY, null);
         }
 
-// Preenchimento roxo proporcional ao progresso
-        float progresso = fase.getProgressoTotal();
-        Paint barPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-        int barInnerX = areaX + (int)(areaW * 0.08f);  // margem das patinhas
-        int barInnerW = (int)(areaW * 0.84f);           // largura interna
+        float progresso = tabuleiro.getFase().getProgressoTotal();
+        int barInnerX = areaX + (int)(areaW * 0.08f);
+        int barInnerW = (int)(areaW * 0.84f);
         int barInnerY = barY + (int)(barH * 0.25f);
         int barInnerH = (int)(barH * 0.50f);
 
-// Fundo escuro interno
-        barPaint.setColor(Color.rgb(20, 16, 48));
+        Paint barPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         barPaint.setStyle(Paint.Style.FILL);
+
+        barPaint.setColor(Color.rgb(20, 16, 48));
         canvas.drawRoundRect(barInnerX, barInnerY,
                 barInnerX + barInnerW, barInnerY + barInnerH,
                 barInnerH / 2f, barInnerH / 2f, barPaint);
 
-// Preenchimento roxo vibrante
         if (progresso > 0) {
             barPaint.setColor(Color.rgb(123, 95, 255));
             canvas.drawRoundRect(barInnerX, barInnerY,
@@ -176,16 +173,21 @@ public class GameView extends View{
                     barInnerH / 2f, barInnerH / 2f, barPaint);
         }
 
-// Gato deslizante no topo da barra
         int catSize = (int)(barH * 0.90f);
-        int catX    = barInnerX + (int)(barInnerW * progresso) - catSize / 2;
+        int catX = barInnerX + (int)(barInnerW * progresso) - catSize / 2;
         catX = Math.max(barInnerX, Math.min(catX, barInnerX + barInnerW - catSize));
         int catY = barY + (barH - catSize) / 2;
-
         Bitmap catIcon = Bitmap.createScaledBitmap(sprites[Gato.LARANJA], catSize, catSize, true);
         canvas.drawBitmap(catIcon, catX, catY, null);
+    }
 
-// --- Card de objetivos (card vazio + conteúdo via código) ---
+    private void desenharCardObjetivos(Canvas canvas) {
+        int areaX = 16;
+        int areaW = getWidth() - areaX * 2;
+        int tabuleiroBottom = offsetY + tamanhoCell * Tabuleiro.TAMANHO;
+        int espacoTotal = getHeight() - tabuleiroBottom;
+        int barH = (int)(espacoTotal * 0.20f);
+        int barY = tabuleiroBottom + (int)(espacoTotal * 0.03f);
         int cardFaseH = (int)(espacoTotal * 0.28f);
         int cardFaseY = barY + barH + (int)(espacoTotal * 0.01f);
 
@@ -194,19 +196,20 @@ public class GameView extends View{
             canvas.drawBitmap(card, areaX, cardFaseY, null);
         }
 
-// Texto "PHASE X OBJECTIVES:"
+        Fase fase = tabuleiro.getFase();
         Paint labelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         labelPaint.setColor(Color.rgb(240, 238, 255));
         labelPaint.setFakeBoldText(true);
         labelPaint.setTextSize(cardFaseH * 0.22f);
         labelPaint.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("FASE " + fase.getNumero(), areaX + 40, cardFaseY + cardFaseH * 0.38f, labelPaint);
-        canvas.drawText("OBJETIVOS:", areaX + 40, cardFaseY + cardFaseH * 0.72f, labelPaint);
+        canvas.drawText("FASE " + fase.getNumero(),
+                areaX + 40, cardFaseY + cardFaseH * 0.38f, labelPaint);
+        canvas.drawText("OBJETIVOS:",
+                areaX + 40, cardFaseY + cardFaseH * 0.72f, labelPaint);
 
-// Objetivos: sprite do gato + contador
-        int icX    = areaX + (int)(areaW * 0.38f);
         int icSize = (int)(cardFaseH * 0.65f);
-        int icY    = cardFaseY + (cardFaseH - icSize ) / 2;
+        int icY    = cardFaseY + (cardFaseH - icSize) / 2;
+        int icX    = areaX + (int)(areaW * 0.38f);
 
         Paint contPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         contPaint.setFakeBoldText(true);
@@ -220,12 +223,10 @@ public class GameView extends View{
             int coletado = fase.getProgresso().get(tipo);
             boolean feito = coletado >= meta;
 
-            // Sprite do gato
             Bitmap sprite = Bitmap.createScaledBitmap(sprites[tipo], icSize, icSize, true);
             int spX = icX + i * (int)(areaW * 0.35f);
-            canvas.drawBitmap(sprite, spX, icY-20, null);
+            canvas.drawBitmap(sprite, spX, icY - 20, null);
 
-            // Contador abaixo do sprite
             contPaint.setColor(feito
                     ? Color.rgb(80, 200, 80)
                     : Color.rgb(240, 238, 255));
@@ -235,11 +236,20 @@ public class GameView extends View{
                     contPaint);
             i++;
         }
+    }
 
-// --- Botões Shop / Boosters / Menu ---
-        int btnH   = (int)(espacoTotal * 0.26f);
-        int btnY   = cardFaseY + cardFaseH + (int)(espacoTotal * 0.02f);
-        int btnW   = (int)(areaW * 0.28f);
+    private void desenharBotoes(Canvas canvas) {
+        int areaX = 16;
+        int areaW = getWidth() - areaX * 2;
+        int tabuleiroBottom = offsetY + tamanhoCell * Tabuleiro.TAMANHO;
+        int espacoTotal = getHeight() - tabuleiroBottom;
+        int barH = (int)(espacoTotal * 0.20f);
+        int barY = tabuleiroBottom + (int)(espacoTotal * 0.03f);
+        int cardFaseH = (int)(espacoTotal * 0.28f);
+        int cardFaseY = barY + barH + (int)(espacoTotal * 0.01f);
+        int btnH = (int)(espacoTotal * 0.26f);
+        int btnY = cardFaseY + cardFaseH + (int)(espacoTotal * 0.02f);
+        int btnW = (int)(areaW * 0.28f);
         int gapBtn = (areaW - btnW * 3) / 4;
 
         if (btnShop != null) {
@@ -254,12 +264,7 @@ public class GameView extends View{
             Bitmap b = Bitmap.createScaledBitmap(btnMenu, btnW, btnH, true);
             canvas.drawBitmap(b, areaX + gapBtn + (btnW + gapBtn) * 2, btnY, null);
         }
-
-
-
     }
-
-
 
 
     @Override
@@ -288,7 +293,7 @@ public class GameView extends View{
             //tabuleiro.trocar(linhaSelecionada, colunaSelecionada, linha, coluna);
             //tabuleiro.verificarMatches();
             //tabuleiro.aplicarGravidade();
-            if (tabuleiro.usarJogadas()){
+            if (tabuleiro.usarJogada()){
                 tabuleiro.trocar(linhaSelecionada, colunaSelecionada, linha, coluna);
                 tabuleiro.verificarMatches();
                 tabuleiro.aplicarGravidade();
