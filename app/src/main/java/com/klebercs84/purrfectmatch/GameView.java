@@ -187,7 +187,7 @@ public class GameView extends View{
 
 // --- Card de objetivos (card vazio + conteúdo via código) ---
         int cardFaseH = (int)(espacoTotal * 0.28f);
-        int cardFaseY = barY + barH + (int)(espacoTotal * 0.02f);
+        int cardFaseY = barY + barH + (int)(espacoTotal * 0.01f);
 
         if (hudCardFase != null) {
             Bitmap card = Bitmap.createScaledBitmap(hudCardFase, areaW, cardFaseH, true);
@@ -200,13 +200,13 @@ public class GameView extends View{
         labelPaint.setFakeBoldText(true);
         labelPaint.setTextSize(cardFaseH * 0.22f);
         labelPaint.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("PHASE " + fase.getNumero(), areaX + 14, cardFaseY + cardFaseH * 0.38f, labelPaint);
-        canvas.drawText("OBJECTIVES:", areaX + 14, cardFaseY + cardFaseH * 0.72f, labelPaint);
+        canvas.drawText("FASE " + fase.getNumero(), areaX + 40, cardFaseY + cardFaseH * 0.38f, labelPaint);
+        canvas.drawText("OBJETIVOS:", areaX + 40, cardFaseY + cardFaseH * 0.72f, labelPaint);
 
 // Objetivos: sprite do gato + contador
         int icX    = areaX + (int)(areaW * 0.38f);
         int icSize = (int)(cardFaseH * 0.65f);
-        int icY    = cardFaseY + (cardFaseH - icSize) / 2;
+        int icY    = cardFaseY + (cardFaseH - icSize ) / 2;
 
         Paint contPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         contPaint.setFakeBoldText(true);
@@ -223,7 +223,7 @@ public class GameView extends View{
             // Sprite do gato
             Bitmap sprite = Bitmap.createScaledBitmap(sprites[tipo], icSize, icSize, true);
             int spX = icX + i * (int)(areaW * 0.35f);
-            canvas.drawBitmap(sprite, spX, icY, null);
+            canvas.drawBitmap(sprite, spX, icY-20, null);
 
             // Contador abaixo do sprite
             contPaint.setColor(feito
@@ -231,7 +231,7 @@ public class GameView extends View{
                     : Color.rgb(240, 238, 255));
             canvas.drawText(coletado + "/" + meta,
                     spX + icSize / 2f,
-                    cardFaseY + cardFaseH * 0.92f,
+                    cardFaseY + cardFaseH * 0.85f,
                     contPaint);
             i++;
         }
