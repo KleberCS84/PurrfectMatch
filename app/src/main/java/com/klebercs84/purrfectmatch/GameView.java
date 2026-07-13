@@ -136,69 +136,126 @@ public class GameView extends View{
         canvas.drawText(String.valueOf(tabuleiro.getJogadasRestantes()), getWidth() * 0.78f, hudY + hudH * 0.78f, hudPaint);
 
         // === ÁREA INFERIOR ===
-        int areaX = 16;
-        int areaW = getWidth() - areaX * 2;
+        Fase fase = tabuleiro.getFase();
+        int areaX          = 16;
+        int areaW          = getWidth() - areaX * 2;
         int tabuleiroBottom = offsetY + tamanhoCell * Tabuleiro.TAMANHO;
-        int espacoTotal = getHeight() - tabuleiroBottom;
+        int espacoTotal    = getHeight() - tabuleiroBottom;
 
-        // --- Barra de progresso ---
-        int barH = (int) (espacoTotal * 0.22f);
-        int barY = tabuleiroBottom + (int) (espacoTotal * 0.04f);
+// --- Barra de progresso (card vazio + preenchimento via código) ---
+        int barH = (int)(espacoTotal * 0.20f);
+        int barY = tabuleiroBottom + (int)(espacoTotal * 0.03f);
 
-        if(hudProgressBar != null){
+// Fundo da barra (asset vazio com patinhas)
+        if (hudProgressBar != null) {
             Bitmap bar = Bitmap.createScaledBitmap(hudProgressBar, areaW, barH, true);
             canvas.drawBitmap(bar, areaX, barY, null);
         }
 
-        // --- Card de objetivos ---
-        int cardFaseH = (int) (espacoTotal * 0.28f);
-        int carFaseY = barY + barH + (int) (espacoTotal * 0.02f);
+// Preenchimento roxo proporcional ao progresso
+        float progresso = fase.getProgressoTotal();
+        Paint barPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        if (hudCardFase != null){
-            Bitmap card = Bitmap.createScaledBitmap(hudCardFase, areaW, cardFaseH, true);
-            canvas.drawBitmap(card, areaX, carFaseY, null);
+        int barInnerX = areaX + (int)(areaW * 0.08f);  // margem das patinhas
+        int barInnerW = (int)(areaW * 0.84f);           // largura interna
+        int barInnerY = barY + (int)(barH * 0.25f);
+        int barInnerH = (int)(barH * 0.50f);
+
+// Fundo escuro interno
+        barPaint.setColor(Color.rgb(20, 16, 48));
+        barPaint.setStyle(Paint.Style.FILL);
+        canvas.drawRoundRect(barInnerX, barInnerY,
+                barInnerX + barInnerW, barInnerY + barInnerH,
+                barInnerH / 2f, barInnerH / 2f, barPaint);
+
+// Preenchimento roxo vibrante
+        if (progresso > 0) {
+            barPaint.setColor(Color.rgb(123, 95, 255));
+            canvas.drawRoundRect(barInnerX, barInnerY,
+                    barInnerX + (int)(barInnerW * progresso), barInnerY + barInnerH,
+                    barInnerH / 2f, barInnerH / 2f, barPaint);
         }
 
-        // Números dinâmicos sobre o card (contadores dos objetivos)
-        Fase fase = tabuleiro.getFase();
-        Paint objPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        objPaint.setFakeBoldText(true);
-        objPaint.setTextAlign(Paint.Align.CENTER);
-        objPaint.setTextSize(cardFaseH * 0.38f);
+// Gato deslizante no topo da barra
+        int catSize = (int)(barH * 0.90f);
+        int catX    = barInnerX + (int)(barInnerW * progresso) - catSize / 2;
+        catX = Math.max(barInnerX, Math.min(catX, barInnerX + barInnerW - catSize));
+        int catY = barY + (barH - catSize) / 2;
+
+        Bitmap catIcon = Bitmap.createScaledBitmap(sprites[Gato.LARANJA], catSize, catSize, true);
+        canvas.drawBitmap(catIcon, catX, catY, null);
+
+// --- Card de objetivos (card vazio + conteúdo via código) ---
+        int cardFaseH = (int)(espacoTotal * 0.28f);
+        int cardFaseY = barY + barH + (int)(espacoTotal * 0.02f);
+
+        if (hudCardFase != null) {
+            Bitmap card = Bitmap.createScaledBitmap(hudCardFase, areaW, cardFaseH, true);
+            canvas.drawBitmap(card, areaX, cardFaseY, null);
+        }
+
+// Texto "PHASE X OBJECTIVES:"
+        Paint labelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        labelPaint.setColor(Color.rgb(240, 238, 255));
+        labelPaint.setFakeBoldText(true);
+        labelPaint.setTextSize(cardFaseH * 0.22f);
+        labelPaint.setTextAlign(Paint.Align.LEFT);
+        canvas.drawText("PHASE " + fase.getNumero(), areaX + 14, cardFaseY + cardFaseH * 0.38f, labelPaint);
+        canvas.drawText("OBJECTIVES:", areaX + 14, cardFaseY + cardFaseH * 0.72f, labelPaint);
+
+// Objetivos: sprite do gato + contador
+        int icX    = areaX + (int)(areaW * 0.38f);
+        int icSize = (int)(cardFaseH * 0.65f);
+        int icY    = cardFaseY + (cardFaseH - icSize) / 2;
+
+        Paint contPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        contPaint.setFakeBoldText(true);
+        contPaint.setTextAlign(Paint.Align.CENTER);
+        contPaint.setTextSize(cardFaseH * 0.28f);
 
         int i = 0;
-        for(Map.Entry<Integer, Integer> entry : fase.getObjetivos().entrySet()){
-            int coletado = fase.getProgresso().get(entry.getKey());
-            int meta = entry.getValue();
+        for (Map.Entry<Integer, Integer> entry : fase.getObjetivos().entrySet()) {
+            int tipo     = entry.getKey();
+            int meta     = entry.getValue();
+            int coletado = fase.getProgresso().get(tipo);
             boolean feito = coletado >= meta;
 
-            objPaint.setColor(feito ? Color.rgb(80,200,80) : Color.rgb(240,238,255));
+            // Sprite do gato
+            Bitmap sprite = Bitmap.createScaledBitmap(sprites[tipo], icSize, icSize, true);
+            int spX = icX + i * (int)(areaW * 0.35f);
+            canvas.drawBitmap(sprite, spX, icY, null);
 
-            float posX = areaX + areaW * (i == 0 ? 0.48f : 0.76f);
-            float posY = carFaseY + cardFaseH * 0.92f;
-            canvas.drawText(String.valueOf(coletado), posX, posY, objPaint);
+            // Contador abaixo do sprite
+            contPaint.setColor(feito
+                    ? Color.rgb(80, 200, 80)
+                    : Color.rgb(240, 238, 255));
+            canvas.drawText(coletado + "/" + meta,
+                    spX + icSize / 2f,
+                    cardFaseY + cardFaseH * 0.92f,
+                    contPaint);
             i++;
         }
 
-        // --- Botões Shop / Boosters / Menu ---
-        int btnH = (int) (espacoTotal * 0.26f);
-        int btnY = carFaseY + cardFaseH + (int) (espacoTotal * 0.02f);
-        int btnW = (int) (areaW * 0.32f);
+// --- Botões Shop / Boosters / Menu ---
+        int btnH   = (int)(espacoTotal * 0.26f);
+        int btnY   = cardFaseY + cardFaseH + (int)(espacoTotal * 0.02f);
+        int btnW   = (int)(areaW * 0.28f);
         int gapBtn = (areaW - btnW * 3) / 4;
 
-        if (btnShop != null){
+        if (btnShop != null) {
             Bitmap b = Bitmap.createScaledBitmap(btnShop, btnW, btnH, true);
             canvas.drawBitmap(b, areaX + gapBtn, btnY, null);
         }
-        if (btnBoosters != null){
+        if (btnBoosters != null) {
             Bitmap b = Bitmap.createScaledBitmap(btnBoosters, btnW, btnH, true);
             canvas.drawBitmap(b, areaX + gapBtn + btnW + gapBtn, btnY, null);
         }
-
-        if (btnMenu != null){
+        if (btnMenu != null) {
             Bitmap b = Bitmap.createScaledBitmap(btnMenu, btnW, btnH, true);
-            canvas.drawBitmap(b, areaX + (btnW + gapBtn) * 2, btnY, null);
+            canvas.drawBitmap(b, areaX + gapBtn + (btnW + gapBtn) * 2, btnY, null);
         }
+
+
 
     }
 
