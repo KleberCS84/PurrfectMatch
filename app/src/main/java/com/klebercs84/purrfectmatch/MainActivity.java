@@ -8,8 +8,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        mostrarTelaInicial();
+    }
 
-        // Substitui o layout XML pela GameView desenhada no código
+    private void mostrarTelaInicial(){
+        TelaInicialView telaInicial = new TelaInicialView(this, () -> mostrarJogo());
+        setContentView(telaInicial);
+    }
+
+    private void mostrarJogo(){
         GameView gameView = new GameView(this);
         setContentView(gameView);
     }

@@ -28,11 +28,9 @@ public class Gato {
     public void setTipo(int tipo){
         this.tipo = tipo;
     }
-
     public boolean isSelecionado() {
         return selecionado;
     }
-
     public void setSelecionado(boolean selecionado) {
         this.selecionado = selecionado;
     }
