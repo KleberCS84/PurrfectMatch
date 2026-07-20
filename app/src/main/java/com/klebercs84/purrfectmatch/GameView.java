@@ -11,6 +11,7 @@ import android.view.View;
 import java.util.Map;
 
 public class GameView extends View{
+    private MainActivity mainActivity;
     private Tabuleiro tabuleiro;
     private Paint paint;
     private int tamanhoCell;
@@ -32,8 +33,9 @@ public class GameView extends View{
     private int offsetX;
 
 
-    public GameView(Context context){
+    public GameView(Context context, MainActivity mainActivity){
         super(context);
+        this.mainActivity = mainActivity;
         tabuleiro = new Tabuleiro();
         paint = new Paint();
         carregarSprites (context);
@@ -297,6 +299,17 @@ public class GameView extends View{
                 tabuleiro.trocar(linhaSelecionada, colunaSelecionada, linha, coluna);
                 tabuleiro.verificarMatches();
                 tabuleiro.aplicarGravidade();
+                // Verificar vitória
+                if (tabuleiro.getFase().isConcluida()){
+                    mainActivity.mostrarVitoria(tabuleiro.getPontuacao());
+                    return true;
+                }
+
+                // Verificar game over
+                if (tabuleiro.getJogadasRestantes() == 0){
+                    mainActivity.mostrarGameOver(tabuleiro.getPontuacao());
+                    return true;
+                }
             }
             linhaSelecionada = -1;
             colunaSelecionada = -1;
