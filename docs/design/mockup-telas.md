@@ -15,8 +15,6 @@ gatos nas chaminés, janela iluminada). Essa direção foi escolhida por:
 - Contraste alto entre o fundo escuro e os sprites coloridos dos gatos
 - Atmosfera emocional que cria apego ao tema
 
-O arquivo `mockup-escolhido.png` nesta pasta mostra o mockup de referência.
-
 ---
 
 ## Paleta de cores
@@ -35,86 +33,90 @@ O arquivo `mockup-escolhido.png` nesta pasta mostra o mockup de referência.
 
 ---
 
-## Tipografia
+## Telas implementadas
 
-- **Display (título do jogo)**: 20px, weight 500, cor `#F0EEFF`
-- **Subtítulo**: 9px, uppercase, letter-spacing 2px, cor `#9F8FFF`
-- **Valores do HUD** (pontos, jogadas): 14px, weight 500, cor `#F0EEFF`
-- **Labels do HUD**: 8px, uppercase, letter-spacing 1px, cor `#6B5FA8`
-- **Objetivos da fase**: texto descritivo claro, ex: "Collect 10 Orange Tabbies"
+### 1. Tela inicial ✅
+- Background noturno com constelações (`bg_tela_inicial.png`)
+- Logo "Purrfect Match" animado subindo de fora da tela
+- Botões PLAY e LEVELS com fade-in após o logo chegar
+- Toque em PLAY inicia o jogo
 
----
-
-## Telas
-
-### 1. Tela inicial
-
-**Objetivo**: apresentar o jogo com identidade clara e convidar o jogador
-a começar com o mínimo de fricção.
-
-**Elementos**:
-- Cenário noturno de cidade ao fundo (telhados, chaminés, estrelas)
-- Gatos silhueta nos telhados como decoração
-- Título "Purrfect Match" + subtítulo "cat rescue"
-- Mini-grid de gatos como prévia do gameplay
-- Botão primário "Jogar" (roxo vibrante)
-- Botão secundário "Fases"
-
----
-
-### 2. Tela de jogo
-
-**Objetivo**: mostrar toda a informação necessária sem poluir o tabuleiro.
-
-**Elementos confirmados pelo mockup da IA**:
-- HUD superior: Score (esquerda) + Moves Left (direita) com ícone de patinha
-- Tabuleiro 8x8 com gatos sobre fundo azul/roxo escuro
-- Borda dourada #FFD700 no gato selecionado
-- Barra de progresso com ícone de gato deslizante e ícones de patinha
-- Objetivos da fase descritos em texto: "Collect 10 Orange Tabbies / Rescue 3 Black Cats"
-- Boosters: Yarn Ball (novelo de lã) e Fish Treat (petisco de peixe)
+### 2. Tela de jogo ✅
+- Background noturno de cidade com grade 7x7 integrada (`bg_night_city.png`)
+- HUD superior: Score (patinha dourada) + Moves Left (estrela roxa)
+- Tabuleiro 7x7 com 6 tipos de sprites de gatos
+- Borda dourada `#FFD700` no gato selecionado
+- Barra de progresso com gato deslizante e ícones de patinha
+- Card de objetivos com sprites dinâmicos e contadores
 - Botões inferiores: Shop · Boosters · Menu
 
-**Novos elementos descobertos nos mockups da IA** (implementar em etapas futuras):
-- Boosters com ícones temáticos — relevantes para monetização
-- Barra de progresso com marcadores percentuais (40%, 50%, 120%)
-- Objetivos escritos por extenso na tela (mais claro para o jogador)
+### 3. Tela de vitória ✅
+- Card com troféu e coroa dourada (`card_vitoria.png`)
+- Score final em destaque
+- Botão "NEXT LEVEL" dourado
+
+### 4. Tela de game over ✅
+- Card com gato triste vermelho (`card_game_over.png`)
+- Score final em destaque
+- Botão "TRY AGAIN" roxo neon
 
 ---
 
-### 3. Tela de fase concluída
+## Fluxo de navegação implementado
 
-**Objetivo**: recompensar o jogador e motivar a continuar.
-
-**Elementos**:
-- Label "FASE X CONCLUÍDA"
-- Sistema de 3 estrelas
-- Gatos resgatados como recompensa emocional
-- Resumo: matches feitos, jogadas usadas, bônus de jogadas sobrando
-- Botão "Próxima fase" (primário) e "Menu" (secundário)
+```
+Tela Inicial
+    → [PLAY] → Tela de Jogo
+                   → [objetivos concluídos] → Tela de Vitória
+                                                   → [NEXT LEVEL] → Tela de Jogo
+                   → [jogadas = 0] → Tela de Game Over
+                                         → [TRY AGAIN] → Tela de Jogo
+```
 
 ---
 
-## Elemento de assinatura
+## Assets gerados (Nanobanana + remove.bg)
 
-O cenário noturno de cidade com gatos nas chaminés e janelas iluminadas
-é o elemento mais memorável do Purrfect Match. Diferencia o jogo de outros
-match-3 e reforça a narrativa de resgate noturno.
+### Sprites do tabuleiro
+`gato_laranja.png` · `gato_preto.png` · `gato_branco.png`
+`gato_cinza.png` · `gato_rajado.png` · `gato_caramelo.png`
+
+### Backgrounds
+`bg_night_city.png` (jogo) · `bg_tela_inicial.png` (menu)
+
+### HUD e UI
+`hud_cards.png` · `hud_progress_bar.png` · `hud_card_fase.png`
+`ic_paw_gold.png` · `ic_star_purple.png` · `ic_cat_progress.png`
+`ic_paw_bar.png` · `ic_booster_yarn.png` · `ic_booster_fish.png`
+
+### Botões
+`btn_shop.png` · `btn_boosters.png` · `btn_menu.png`
+`btn_play.png` · `btn_levels.png`
+`btn_next_level.png` · `btn_try_again.png`
+
+### Logo e cards
+`logo_purrfect.png` · `card_vitoria.png` · `card_game_over.png`
 
 ---
 
 ## Roadmap de implementação
 
-- [x] Tabuleiro 8x8 com sprites de gatos
+- [x] Tabuleiro 7x7 com sprites de gatos
 - [x] Toque e troca de gatos adjacentes
 - [x] Detecção de match-3 e remoção
 - [x] Queda de gatos (gravidade)
 - [x] Pontuação básica
 - [x] Destaque visual do gato selecionado
-- [ ] HUD com score e moves left
-- [ ] Cenário noturno de cidade ao fundo
-- [ ] Barra de progresso com objetivos da fase
-- [ ] Tela inicial com botões funcionais
-- [ ] Tela de fase concluída com estrelas
-- [ ] Boosters (Yarn Ball, Fish Treat)
+- [x] HUD com score e moves left
+- [x] Background noturno de cidade
+- [x] Barra de progresso com objetivos da fase
+- [x] Card de objetivos com sprites dinâmicos
+- [x] Botões Shop · Boosters · Menu
+- [x] Refatoração do código (onDraw → 6 métodos)
+- [x] Tela inicial com logo animado e botões funcionais
+- [x] Tela de vitória com troféu e score
+- [x] Tela de game over com gato triste e score
+- [x] Fluxo completo de navegação entre telas
+- [ ] Boosters funcionais (Yarn Ball, Fish Treat)
 - [ ] AdMob para monetização
+- [ ] Publicação na Play Store
