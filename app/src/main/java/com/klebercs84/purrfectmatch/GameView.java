@@ -42,23 +42,27 @@ public class GameView extends View{
     }
 
     private void carregarSprites(Context context){
-        sprites = new Bitmap[Gato.TOTAL_TIPOS];
-        sprites[Gato.LARANJA] = BitmapFactory.decodeResource(context.getResources(),R.drawable.gato_laranja);
-        sprites[Gato.PRETO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_preto);
-        sprites[Gato.BRANCO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_branco);
-        sprites[Gato.CINZA] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_cinza);
-        sprites[Gato.RAJADO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_rajado);
-        sprites[Gato.CARAMELO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_caramelo);
-        icPawGold = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_paw_gold);
-        icStarPurple = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_star_purple);
-        hudCards = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_cards);
-        bgNightCity = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_night_city);
-        hudCardObjetivos = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_card_objetivos);
-        hudProgressBar = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_progress_bar);
-        hudCardFase = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_card_fase);
-        btnShop = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_shop);
-        btnBoosters = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_boosters);
-        btnMenu = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_menu);
+        try {
+            sprites = new Bitmap[Gato.TOTAL_TIPOS];
+            sprites[Gato.LARANJA] = BitmapFactory.decodeResource(context.getResources(),R.drawable.gato_laranja);
+            sprites[Gato.PRETO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_preto);
+            sprites[Gato.BRANCO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_branco);
+            sprites[Gato.CINZA] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_cinza);
+            sprites[Gato.RAJADO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_rajado);
+            sprites[Gato.CARAMELO] = BitmapFactory.decodeResource(context.getResources(), R.drawable.gato_caramelo);
+            icPawGold = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_paw_gold);
+            icStarPurple = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_star_purple);
+            hudCards = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_cards);
+            bgNightCity = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_night_city);
+            hudCardObjetivos = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_card_objetivos);
+            hudProgressBar = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_progress_bar);
+            hudCardFase = BitmapFactory.decodeResource(context.getResources(), R.drawable.hud_card_fase);
+            btnShop = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_shop);
+            btnBoosters = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_boosters);
+            btnMenu = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_menu);
+        } catch (Exception e){
+            android.util.Log.e("GameView", "Erro ao carregar sprites: " + e.getMessage());
+        }
     }
 
     @Override
@@ -93,6 +97,7 @@ public class GameView extends View{
     }
 
     private void desenharTabuleiro(Canvas canvas) {
+        if (sprites == null) return;
         int padding = (int)(tamanhoCell * 0.02f);
 
         Paint selecaoPaint = new Paint();
@@ -105,12 +110,16 @@ public class GameView extends View{
                 Gato gato = tabuleiro.getGato(linha, coluna);
                 if (gato == null) continue;
 
+                int tipo = gato.getTipo();
+                if (tipo < 0 || tipo >= sprites.length)continue;
+                if (sprites[tipo] == null) continue;
+
                 float x = coluna * tamanhoCell + offsetX + padding;
                 float y = linha  * tamanhoCell + offsetY + padding;
                 int tamanhoSprite = tamanhoCell - padding * 2;
 
                 Bitmap redimensionado = Bitmap.createScaledBitmap(
-                        sprites[gato.getTipo()], tamanhoSprite, tamanhoSprite, true);
+                        sprites[tipo], tamanhoSprite, tamanhoSprite, true);
                 canvas.drawBitmap(redimensionado, x, y, null);
 
                 if (gato.isSelecionado()) {
@@ -142,6 +151,7 @@ public class GameView extends View{
     }
 
     private void desenharBarraProgresso(Canvas canvas) {
+        if (tabuleiro == null || tabuleiro.getFase() == null) return;
         int areaX = 16;
         int areaW = getWidth() - areaX * 2;
         int tabuleiroBottom = offsetY + tamanhoCell * Tabuleiro.TAMANHO;
@@ -184,6 +194,8 @@ public class GameView extends View{
     }
 
     private void desenharCardObjetivos(Canvas canvas) {
+        if (tabuleiro == null || tabuleiro.getFase() == null)return;
+        if (sprites == null) return;
         int areaX = 16;
         int areaW = getWidth() - areaX * 2;
         int tabuleiroBottom = offsetY + tamanhoCell * Tabuleiro.TAMANHO;

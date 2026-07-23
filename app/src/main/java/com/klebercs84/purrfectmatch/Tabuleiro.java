@@ -38,6 +38,9 @@ public class Tabuleiro {
 
     // Retorna o gato numa posição específica
     public Gato getGato(int linha, int coluna){
+        if (linha < 0 || linha >= TAMANHO || coluna < 0 || coluna >= TAMANHO){
+            return null;
+        }
         return grade[linha][coluna];
     }
 
@@ -65,9 +68,9 @@ public class Tabuleiro {
         // Só permite troca de gatos adjacentes
         boolean mesmaLinha = (linha1 == linha2) && (Math.abs(coluna1 - coluna2) == 1);
         boolean mesmaColuna = (coluna1 == coluna2) && (Math.abs(linha1-linha2) == 1);
-        if (!mesmaLinha && !mesmaColuna){
-            return; // ignora troca inválida
-        }
+        if (!mesmaLinha && !mesmaColuna) return;
+        // Verifica se os dois gatos existem antes de trocar
+        if (grade[linha1][coluna1] == null || grade[linha2][coluna2] == null) return;
 
         // Troca os dois gatos de posição
         Gato temp = grade[linha1][coluna1];
@@ -82,8 +85,11 @@ public class Tabuleiro {
         // Verifica matches horizontais
         for (int linha = 0; linha < TAMANHO; linha++){
             for (int coluna = 0; coluna < TAMANHO -2; coluna++){
-                int tipo = grade[linha][coluna].getTipo();
-                if (tipo == grade[linha][coluna + 1].getTipo() && tipo == grade[linha][coluna + 2].getTipo()){
+                Gato g1 = grade[linha][coluna];
+                Gato g2 = grade[linha][coluna + 1];
+                Gato g3 = grade[linha][coluna + 2];
+                if (g1 == null || g2 == null || g3 == null) continue;
+                if (g1.getTipo() == g2.getTipo() && g1.getTipo() == g3.getTipo()){
                     paraRemover[linha][coluna] = true;
                     paraRemover[linha][coluna + 1] = true;
                     paraRemover[linha][coluna + 2] = true;
@@ -95,8 +101,11 @@ public class Tabuleiro {
         // Verifica matches verticais
         for (int linha = 0; linha < TAMANHO - 2; linha++){
             for (int coluna = 0; coluna < TAMANHO; coluna++){
-                int tipo = grade[linha][coluna].getTipo();
-                if (tipo == grade[linha + 1][coluna].getTipo() && tipo == grade[linha + 2][coluna].getTipo()){
+                Gato g1 = grade [linha][coluna];
+                Gato g2 = grade[linha + 1][coluna];
+                Gato g3 = grade[linha + 2][coluna];
+                if (g1 == null || g2 == null || g3 == null) continue;
+                if (g1.getTipo() == g2.getTipo() && g1.getTipo() == g3.getTipo()){
                     paraRemover[linha][coluna] = true;
                     paraRemover[linha + 1][coluna] = true;
                     paraRemover[linha + 2][coluna] = true;

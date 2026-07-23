@@ -61,7 +61,7 @@ public class TelaResultadoView extends View {
         // Background
         if (bgTelaFinal != null) {
             canvas.drawBitmap(
-                    Bitmap.createScaledBitmap(bgTelaFinal, w, h, true),
+                    Bitmap.createScaledBitmap(bgTelaFinal, w, h,true),
                     0, 0, null);
         } else {
             canvas.drawColor(Color.rgb(12, 11, 42));
@@ -69,8 +69,8 @@ public class TelaResultadoView extends View {
 
         // Card central (vitória ou game over)
         Bitmap card = resultado == Resultado.VITORIA ? cardVitoria : cardGameOver;
-        int cardW = (int)(w * 0.78f);
-        int cardH = (int)(cardW * 1.20f);
+        int cardW = (int)(w * 1.2f);
+        int cardH = (int)(cardW * 0.9f);
         int cardX = (w - cardW) / 2;
         int cardY = (int)(h * 0.08f);
 
@@ -108,7 +108,7 @@ public class TelaResultadoView extends View {
         int btnW = (int)(w * 0.70f);
         int btnH = (int)(btnW * 0.22f);
         btnLeft  = (w - btnW) / 2;
-        btnTop   = cardY + cardH + (int)(h * 0.03f);
+        btnTop   = cardY + cardH + (int)(h * 0.001f);
         btnRight  = btnLeft + btnW;
         btnBottom = btnTop + btnH;
 

@@ -11,7 +11,7 @@ import android.view.View;
 public class TelaInicialView extends View {
 
     private Bitmap bgTelaInicial;
-    private Bitmap logoPurrfect;
+    private Bitmap logoCat;
     private Bitmap btnPlay;
     private Bitmap btnLevels;
 
@@ -46,7 +46,7 @@ public class TelaInicialView extends View {
 
     private void carregarAssets (Context context) {
         bgTelaInicial = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_tela_inicial);
-        logoPurrfect = BitmapFactory.decodeResource(context.getResources(), R.drawable.logo_purrfect);
+        logoCat = BitmapFactory.decodeResource(context.getResources(), R.drawable.logo_cat_crush);
         btnPlay = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_play);
         btnLevels = BitmapFactory.decodeResource(context.getResources(), R.drawable.btn_levels);
     }
@@ -116,12 +116,12 @@ public class TelaInicialView extends View {
         }
 
         // Logo animado
-        if (logoPurrfect != null){
+        if (logoCat != null){
             int logoW = (int) (w * 0.80f);
             int logoH = (int) (logoW * 0.28f);
             int logoX = (w - logoW) / 2;
             alphaPaint.setAlpha(255);
-            canvas.drawBitmap(Bitmap.createScaledBitmap(logoPurrfect, logoW, logoH, true), logoX, logoY, alphaPaint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(logoCat, logoW, logoH, true), logoX, logoY, alphaPaint);
         }
 
         // Botões com fade-in

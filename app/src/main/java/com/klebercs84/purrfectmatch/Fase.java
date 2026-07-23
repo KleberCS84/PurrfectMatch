@@ -23,12 +23,15 @@ public class Fase {
 
     // Registra que um gato do tipo foi coletado
     public void registrarColeta(int tipo){
-        if (progresso.containsKey(tipo)){
+        if (!progresso.containsKey(tipo)) return;
+        try {
             int atual = progresso.get(tipo);
             int meta = objetivos.get(tipo);
-            if (atual<meta){
-                progresso.put(tipo, atual + 1);
+            if (atual < meta){
+                progresso.put(tipo, atual +1);
             }
+        } catch (Exception e){
+            android.util.Log.e("Fase", "Erro ao registrar coleta: "+ e.getMessage());
         }
     }
 
@@ -37,11 +40,17 @@ public class Fase {
         if (objetivos.isEmpty()) return 0f;
         int totalMeta = 0;
         int totalColetado = 0;
-        for (Map.Entry<Integer, Integer> entry : objetivos.entrySet()){
-            totalMeta += entry.getValue();
-            totalColetado += progresso.get(entry.getKey());
+        try {
+            for (Map.Entry<Integer, Integer> entry : objetivos.entrySet()){
+                totalMeta += entry.getValue();
+                totalColetado += progresso.get(entry.getKey());
+            }
+            if (totalMeta == 0) return 0f;
+            return (float) totalColetado/totalMeta;
+        } catch (Exception e) {
+            android.util.Log.e("Fase", "Erro ao calcular progresso: "+ e.getMessage());
+            return 0f;
         }
-        return (float) totalColetado / totalMeta;
     }
 
     // Verifica se todos os objetivos foram concluídos
